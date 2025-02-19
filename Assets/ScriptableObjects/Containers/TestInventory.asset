@@ -1,0 +1,30 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3b37da3410124be4db8a37a63a766fd8, type: 3}
+  m_Name: TestInventory
+  m_EditorClassIdentifier: 
+  slots:
+  - item: {fileID: 11400000, guid: daf07d274b2f3704699bec82b6743bdc, type: 2}
+    quantity: 322
+  - item: {fileID: 11400000, guid: f15fe5816bd361a4e8446fabba11c1aa, type: 2}
+    quantity: 1
+  - item: {fileID: 11400000, guid: f15fe5816bd361a4e8446fabba11c1aa, type: 2}
+    quantity: 1
+  - item: {fileID: 11400000, guid: f15fe5816bd361a4e8446fabba11c1aa, type: 2}
+    quantity: 1
+  - item: {fileID: 11400000, guid: f15fe5816bd361a4e8446fabba11c1aa, type: 2}
+    quantity: 1
+  - item: {fileID: 11400000, guid: f15fe5816bd361a4e8446fabba11c1aa, type: 2}
+    quantity: 1
+  - item: {fileID: 11400000, guid: f15fe5816bd361a4e8446fabba11c1aa, type: 2}
+    quantity: 1
+  maxSlots: 20
