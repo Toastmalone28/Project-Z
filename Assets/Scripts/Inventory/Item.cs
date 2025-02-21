@@ -10,10 +10,10 @@ public class Item : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        Container c = other.GetComponentInParent<TestPlayerMovement>().playerInventory;
+        Inventory c = other.GetComponentInParent<Inventory>();
         Collect(c);
     }
-    public void Collect(Container container)
+    public void Collect(Inventory container)
     {
         if (container.AddItem(this, amount))
             Destroy(gameObject);

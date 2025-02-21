@@ -3,16 +3,13 @@ using UnityEngine;
 public class TestPlayerMovement : MonoBehaviour
 {
     [SerializeField]
-    public Container playerInventory;
-
-    [SerializeField]
     public Camera playerCamera;
     public float walkSpeed = 6f;
     public float runSpeed = 12f;
     public float jumpPower = 7f;
     public float gravity = 10f;
     public float lookSpeed = 2f;
-    public float lookXLimit = 45f;
+    public float lookXLimit = 90f;
     public float defaultHeight = 2f;
     public float crouchHeight = 1f;
     public float crouchSpeed = 3f;
