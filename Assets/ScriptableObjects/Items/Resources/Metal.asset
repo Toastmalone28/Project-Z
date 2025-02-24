@@ -14,4 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemName: Metal
   itemSprite: {fileID: 0}
+  itemPrefab: {fileID: 8306389450912288528, guid: 9b09d410c10646645a453e5235460c96,
+    type: 3}
   isUnique: 0
+  type: 2

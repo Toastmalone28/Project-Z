@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class TestPlayerMovement : MonoBehaviour
@@ -20,11 +21,15 @@ public class TestPlayerMovement : MonoBehaviour
 
     private bool canMove = true;
 
+    private Inventory inventory;
+
     void Start()
     {
         characterController = GetComponent<CharacterController>();
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
+
+        inventory = GetComponent<Inventory>();
     }
 
     void Update()
@@ -75,5 +80,25 @@ public class TestPlayerMovement : MonoBehaviour
             playerCamera.transform.localRotation = Quaternion.Euler(rotationX, 0, 0);
             transform.rotation *= Quaternion.Euler(0, Input.GetAxis("Mouse X") * lookSpeed, 0);
         }
+
+        DebugInputs();
+
     }
+
+    private void DebugInputs()
+    {
+        if (Input.GetKeyDown(KeyCode.F))
+            inventory.EquipItem();
+        UnequipItem();
+    }
+
+    private void UnequipItem()
+    {
+        if (Input.GetKeyDown(KeyCode.Alpha1))
+        {
+
+        }
+    }
+
+    
 }

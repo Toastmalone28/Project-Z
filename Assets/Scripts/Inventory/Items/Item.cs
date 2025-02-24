@@ -20,12 +20,4 @@ public class Item : MonoBehaviour
         else
             Debug.Log("Inventory is full");
     }
-    public void InstantiateItem()
-    {
-
-    }
-    public void UseItem()
-    {
-
-    }
 }

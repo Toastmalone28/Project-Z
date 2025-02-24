@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -24,7 +25,7 @@ public class Human : MonoBehaviour
     private void Awake()
     {
         InitializeStats();
-
+        InitializeInventory();
         StartCoroutine(GetHungry());
         StartCoroutine(GetThirsty());
     }
@@ -42,6 +43,17 @@ public class Human : MonoBehaviour
         stamina = maxStamina;
         hunger = maxHunger;
         thirst = maxThirst;
+    }
+    private void InitializeInventory()
+    {
+        inventory = GetComponent<Inventory>();
+        inventory.OnEquipmentChange += UpdateArmor;
+    }
+
+    private void UpdateArmor(float amount)
+    {
+        armor = amount;
+        Debug.Log(name + ": " + armor);
     }
 
     private IEnumerator GetHungry()

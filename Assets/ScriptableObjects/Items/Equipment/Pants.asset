@@ -9,12 +9,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9bca60449754bb443a69610f65174129, type: 3}
-  m_Name: Stone
+  m_Script: {fileID: 11500000, guid: 13f63a59590c075478d2e9881be88874, type: 3}
+  m_Name: Pants
   m_EditorClassIdentifier: 
-  itemName: Stone
+  itemName: 
   itemSprite: {fileID: 0}
-  itemPrefab: {fileID: 8306389450912288528, guid: 88e29c7357d53b749b7618b2c6ceea36,
-    type: 3}
-  isUnique: 0
-  type: 2
+  itemPrefab: {fileID: 0}
+  isUnique: 1
+  type: 4
+  equipType: 2
+  armorLevel: 15

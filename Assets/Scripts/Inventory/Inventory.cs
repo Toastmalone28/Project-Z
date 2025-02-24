@@ -1,11 +1,32 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using AYellowpaper.SerializedCollections;
+using System;
 
 public class Inventory : MonoBehaviour
 {
     public List<ContainerSlot> slots = new List<ContainerSlot>();
     public int maxSlots = 20;
+
+    public SerializedDictionary<EquipmentType, ItemObject> equipment = new SerializedDictionary<EquipmentType, ItemObject>();
+    public Weapon currentWeapon;
+
+    public event Action<float> OnEquipmentChange;
+
+    private void Awake()
+    {
+        InitializeEquipment();
+    }
+
+    private void InitializeEquipment()
+    {
+        equipment.Clear();
+        equipment.Add(EquipmentType.Head, null);
+        equipment.Add(EquipmentType.Chest, null);
+        equipment.Add(EquipmentType.Legs, null);
+        equipment.Add(EquipmentType.Feet, null);
+    }
 
     public bool AddItem(Item newItem, int amount)
     {
@@ -39,5 +60,46 @@ public class Inventory : MonoBehaviour
             return true;
         }
         return false;
+    }
+
+    public void EquipItem()
+    {
+        foreach (ContainerSlot slot in slots)
+        {
+            if (slot.item.type == ItemType.Equipment)
+            {
+                Equipment newEquipment = (Equipment)slot.item;
+
+                if(equipment[newEquipment.equipType] != null)
+                {
+                    ItemObject temp = equipment[newEquipment.equipType];
+                    equipment[newEquipment.equipType] = newEquipment;
+                    slot.item = temp;
+                    UpdateArmor();
+                    return;
+                }
+                else
+                {
+                    equipment[newEquipment.equipType] = newEquipment;
+                    RemoveItem(newEquipment, 1);
+                    UpdateArmor();
+                    return;
+                }
+
+            }
+        }
+        Debug.LogWarning("No equipment found in inventory");
+    }
+    public void UpdateArmor()
+    {
+        float newArmor = 0f;
+        foreach (KeyValuePair<EquipmentType, ItemObject> entry in equipment)
+        {
+            if (entry.Value is Equipment equipmentItem)
+            {
+                newArmor += equipmentItem.armorLevel;
+            }
+        }
+        OnEquipmentChange?.Invoke(newArmor);
     }
 }
