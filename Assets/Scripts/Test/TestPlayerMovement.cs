@@ -22,6 +22,7 @@ public class TestPlayerMovement : MonoBehaviour
     private bool canMove = true;
 
     private Inventory inventory;
+    private WeaponHandler weaponHandler;
 
     void Start()
     {
@@ -30,6 +31,7 @@ public class TestPlayerMovement : MonoBehaviour
         Cursor.visible = false;
 
         inventory = GetComponent<Inventory>();
+        weaponHandler = GetComponent<WeaponHandler>();
     }
 
     void Update()
@@ -90,6 +92,24 @@ public class TestPlayerMovement : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.F))
             inventory.EquipItem();
         UnequipItem();
+        UseWeapon();
+        ReloadWeapon();
+    }
+
+    private void ReloadWeapon()
+    {
+        if (Input.GetKeyDown(KeyCode.Mouse1) && inventory.currentWeapon != null)
+        {
+            weaponHandler.ReloadWeapon();
+        }
+    }
+
+    private void UseWeapon()
+    {
+        if (Input.GetKeyDown(KeyCode.Mouse0) && inventory.currentWeapon != null)
+        {
+            weaponHandler.Shoot();
+        }
     }
 
     private void UnequipItem()

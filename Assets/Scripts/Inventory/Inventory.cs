@@ -6,17 +6,28 @@ using System;
 
 public class Inventory : MonoBehaviour
 {
-    public List<ContainerSlot> slots = new List<ContainerSlot>();
+    public List<ContainerSlot> slots;
     public int maxSlots = 20;
 
     public SerializedDictionary<EquipmentType, ItemObject> equipment = new SerializedDictionary<EquipmentType, ItemObject>();
     public Weapon currentWeapon;
 
     public event Action<float> OnEquipmentChange;
+    public event Action<Weapon> OnWeaponChange;
+    public event Action<int> AmmoReturnEvent;
 
     private void Awake()
     {
         InitializeEquipment();
+        InitializeEvents();
+    }
+
+    private void InitializeEvents()
+    {
+        if(TryGetComponent<WeaponHandler>(out WeaponHandler weaponHandler))
+        {
+            weaponHandler.AmmoRequestEvent += HandleAmmoRequest;
+        }
     }
 
     private void InitializeEquipment()
@@ -85,7 +96,27 @@ public class Inventory : MonoBehaviour
                     UpdateArmor();
                     return;
                 }
+            }
 
+            if(slot.item.type == ItemType.Weapon)
+            {
+                Weapon newWeapon = (Weapon)slot.item;
+
+                if (currentWeapon != null)
+                {
+                    ItemObject temp = currentWeapon;
+                    currentWeapon = newWeapon;
+                    slot.item = temp;
+                    OnWeaponChange.Invoke(currentWeapon);
+                    return;
+                }
+                else
+                {
+                    currentWeapon = newWeapon;
+                    RemoveItem(newWeapon, 1);
+                    OnWeaponChange.Invoke(currentWeapon);
+                    return;
+                }
             }
         }
         Debug.LogWarning("No equipment found in inventory");
@@ -101,5 +132,44 @@ public class Inventory : MonoBehaviour
             }
         }
         OnEquipmentChange?.Invoke(newArmor);
+    }
+
+    private void HandleAmmoRequest(Weapon requestedWeapon, int requestedAmount)
+    {
+        foreach (ContainerSlot slot in slots)
+        {
+            if(slot.item is Ammunition ammunition)
+            {
+                if(requestedWeapon.weaponType == ammunition.ammoType)
+                {
+                    int availableAmmo = CheckForAmmo(slot, requestedAmount);
+                    AmmoReturnEvent.Invoke(availableAmmo);
+                    return;
+                }
+            }
+        }
+        Debug.Log("Required ammunition not available");
+    }
+
+    private int CheckForAmmo(ContainerSlot slot, int requestedAmount)
+    {
+        if(slot.quantity >= requestedAmount)
+        {
+            slot.quantity -= requestedAmount;
+
+            if (slot.quantity <= 0)
+                slots.Remove(slot);
+
+            return requestedAmount;
+        }
+        else
+        {
+            int remainingAmmo = slot.quantity;
+
+            slots.Remove(slot);
+
+            return remainingAmmo;
+        }
+            
     }
 }

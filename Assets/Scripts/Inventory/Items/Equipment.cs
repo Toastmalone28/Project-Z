@@ -7,10 +7,5 @@ public enum EquipmentType { Head, Chest, Legs, Feet}
 public class Equipment : ItemObject
 {
     public EquipmentType equipType;
-
     public float armorLevel;
-    public override void UseItem()
-    {
-
-    }
 }

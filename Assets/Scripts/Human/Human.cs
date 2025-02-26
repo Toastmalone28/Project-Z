@@ -7,7 +7,7 @@ public class Human : MonoBehaviour
 {
     public string Name;
     //public Team team;
-    public Inventory inventory;
+    private Inventory inventory;
 
     public float maxHealth = 100f;
     public float maxStamina = 100f;

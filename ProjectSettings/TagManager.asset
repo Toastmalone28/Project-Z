@@ -5,6 +5,10 @@ TagManager:
   serializedVersion: 2
   tags:
   - Resource
+  - Armor
+  - Weapon
+  - Human
+  - Zombie
   layers:
   - Default
   - TransparentFX
@@ -18,7 +22,7 @@ TagManager:
   - 
   - Ground
   - Item
-  - 
+  - Hittables
   - 
   - 
   - 
