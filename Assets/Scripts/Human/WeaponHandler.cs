@@ -15,14 +15,20 @@ public class WeaponHandler : MonoBehaviour
     private Weapon currentWeaponData;
     private Transform barrelPoint;
     private SerializedDictionary<Weapon, int> ammoCache = new SerializedDictionary<Weapon, int>();
-    public event Action<Weapon, int> AmmoRequestEvent;
+    private EventHandler eventHandler;
 
     private int currentAmmo;
 
     private void Awake()
     {
-        GetComponent<Inventory>().OnWeaponChange += EquipWeapon;
-        GetComponent<Inventory>().AmmoReturnEvent += AddAmmo;
+        InitializeEvents();
+    }
+
+    private void InitializeEvents()
+    {
+        eventHandler = GetComponent<EventHandler>();
+        eventHandler.OnWeaponChange += EquipWeapon;
+        eventHandler.AmmoReturnEvent += AddAmmo;
     }
 
     private void EquipWeapon(Weapon weapon)
@@ -87,7 +93,7 @@ public class WeaponHandler : MonoBehaviour
 
         int neededAmmo = currentWeaponData.maxAmmo - currentAmmo;
 
-        AmmoRequestEvent.Invoke(currentWeaponData, neededAmmo);
+        eventHandler.RequestAmmo(currentWeaponData, neededAmmo);
     }
 
     public void AddAmmo(int amount)

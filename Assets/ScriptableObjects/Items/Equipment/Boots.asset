@@ -16,6 +16,6 @@ MonoBehaviour:
   itemSprite: {fileID: 0}
   itemPrefab: {fileID: 0}
   isUnique: 1
-  type: 4
+  type: 3
   equipType: 3
   armorLevel: 10

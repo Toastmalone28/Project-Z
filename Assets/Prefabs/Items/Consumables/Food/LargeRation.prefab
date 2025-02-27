@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 8638023328541222838}
   - component: {fileID: 14261969110471611}
   - component: {fileID: 457091622162201603}
-  m_Layer: 11
+  m_Layer: 0
   m_Name: ItemModel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -61,7 +61,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 9fb7f87953b9ccc499e252d5754f6430, type: 2}
+  - {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -94,9 +94,9 @@ GameObject:
   - component: {fileID: 5493551110925884352}
   - component: {fileID: 6412490478306799453}
   - component: {fileID: 6415671611507701036}
-  m_Layer: 11
-  m_Name: Metal
-  m_TagString: Resource
+  m_Layer: 0
+  m_Name: LargeRation
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -129,7 +129,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3c74cd2d231ff8d46919d26835360e8d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  itemData: {fileID: 11400000, guid: e4436d729eb962e418e4f10bba460579, type: 2}
+  itemData: {fileID: 11400000, guid: edf2106c65d32854b94d9ba422fd4a02, type: 2}
   amount: 1
 --- !u!65 &6415671611507701036
 BoxCollider:

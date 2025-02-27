@@ -17,6 +17,7 @@ MonoBehaviour:
   itemPrefab: {fileID: 851907603603811675, guid: dc345150b25da9845bd186e154c62e2f,
     type: 3}
   isUnique: 1
-  type: 5
+  type: 4
+  weaponType: 2
   range: 200
   maxAmmo: 5

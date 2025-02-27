@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 7431129398862512218}
   m_Layer: 11
   m_Name: MediumAmmo
-  m_TagString: Armor
+  m_TagString: Ammunition
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

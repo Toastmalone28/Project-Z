@@ -12,9 +12,8 @@ public class Inventory : MonoBehaviour
     public SerializedDictionary<EquipmentType, ItemObject> equipment = new SerializedDictionary<EquipmentType, ItemObject>();
     public Weapon currentWeapon;
 
-    public event Action<float> OnEquipmentChange;
-    public event Action<Weapon> OnWeaponChange;
-    public event Action<int> AmmoReturnEvent;
+    private EventHandler eventHandler;
+
 
     private void Awake()
     {
@@ -24,10 +23,8 @@ public class Inventory : MonoBehaviour
 
     private void InitializeEvents()
     {
-        if(TryGetComponent<WeaponHandler>(out WeaponHandler weaponHandler))
-        {
-            weaponHandler.AmmoRequestEvent += HandleAmmoRequest;
-        }
+        eventHandler = GetComponent<EventHandler>();
+        eventHandler.AmmoRequestEvent += HandleAmmoRequest;
     }
 
     private void InitializeEquipment()
@@ -107,14 +104,14 @@ public class Inventory : MonoBehaviour
                     ItemObject temp = currentWeapon;
                     currentWeapon = newWeapon;
                     slot.item = temp;
-                    OnWeaponChange.Invoke(currentWeapon);
+                    eventHandler.ChangeWeapon(currentWeapon);
                     return;
                 }
                 else
                 {
                     currentWeapon = newWeapon;
                     RemoveItem(newWeapon, 1);
-                    OnWeaponChange.Invoke(currentWeapon);
+                    eventHandler.ChangeWeapon(currentWeapon);
                     return;
                 }
             }
@@ -131,7 +128,7 @@ public class Inventory : MonoBehaviour
                 newArmor += equipmentItem.armorLevel;
             }
         }
-        OnEquipmentChange?.Invoke(newArmor);
+        eventHandler.ChangeEquipment(newArmor);
     }
 
     private void HandleAmmoRequest(Weapon requestedWeapon, int requestedAmount)
@@ -143,7 +140,7 @@ public class Inventory : MonoBehaviour
                 if(requestedWeapon.weaponType == ammunition.ammoType)
                 {
                     int availableAmmo = CheckForAmmo(slot, requestedAmount);
-                    AmmoReturnEvent.Invoke(availableAmmo);
+                    eventHandler.ReturnAmmo(availableAmmo);
                     return;
                 }
             }
@@ -171,5 +168,25 @@ public class Inventory : MonoBehaviour
             return remainingAmmo;
         }
             
+    }
+
+    internal void UseItem(ConsumableType consumableType)
+    {
+        foreach (ContainerSlot slot in slots)
+        {
+            if(slot.item.type != ItemType.Consumable)
+                continue;
+
+            Consumable item = slot.item as Consumable;
+
+            if(item.consumableType != consumableType)
+                continue;
+
+            eventHandler.ConsumeItem(consumableType, item.value);
+            slot.quantity--;
+            if (slot.quantity <= 0)
+                slots.Remove(slot);
+            return;
+        }
     }
 }

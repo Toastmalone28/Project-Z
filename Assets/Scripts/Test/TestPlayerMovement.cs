@@ -23,6 +23,8 @@ public class TestPlayerMovement : MonoBehaviour
 
     private Inventory inventory;
     private WeaponHandler weaponHandler;
+    private Human human;
+    private EventHandler eventHandler;
 
     void Start()
     {
@@ -32,6 +34,8 @@ public class TestPlayerMovement : MonoBehaviour
 
         inventory = GetComponent<Inventory>();
         weaponHandler = GetComponent<WeaponHandler>();
+        human = GetComponent<Human>();
+        eventHandler = GetComponent<EventHandler>();
     }
 
     void Update()
@@ -94,6 +98,7 @@ public class TestPlayerMovement : MonoBehaviour
         UnequipItem();
         UseWeapon();
         ReloadWeapon();
+        UseItem();
     }
 
     private void ReloadWeapon()
@@ -118,6 +123,17 @@ public class TestPlayerMovement : MonoBehaviour
         {
 
         }
+    }
+
+    private void UseItem()
+    {
+        if (Input.GetKeyDown(KeyCode.Y))
+            inventory.UseItem(ConsumableType.Healing);
+        if (Input.GetKeyDown(KeyCode.X))
+            inventory.UseItem(ConsumableType.Food);
+        if (Input.GetKeyDown(KeyCode.C))
+            inventory.UseItem(ConsumableType.Water);
+
     }
 
     

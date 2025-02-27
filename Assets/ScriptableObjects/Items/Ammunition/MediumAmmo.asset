@@ -16,5 +16,5 @@ MonoBehaviour:
   itemSprite: {fileID: 0}
   itemPrefab: {fileID: 0}
   isUnique: 0
-  type: 3
+  type: 2
   ammoType: 1
