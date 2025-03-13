@@ -11,7 +11,7 @@ public class WeaponHandler : MonoBehaviour
     public Transform aimDirection;
     public LayerMask whatIsHittable;
 
-    private GameObject currentWeapon;
+    public GameObject currentWeapon {  get; private set; }
     private Weapon currentWeaponData;
     private Transform barrelPoint;
     private SerializedDictionary<Weapon, int> ammoCache = new SerializedDictionary<Weapon, int>();

@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Human : MonoBehaviour
+public class StatsHandler : MonoBehaviour
 {
     public string Name;
     //public Team team;
@@ -15,13 +15,12 @@ public class Human : MonoBehaviour
     public float maxHunger = 100f;
     public float maxThirst = 100f;
 
-    private float health;
-    private float stamina;
-    private float hunger;
-    private float thirst;
-    private float armor = 0f;
+    public float health {  get; private set; }
+    public float stamina { get; private set; }
+    public float hunger { get; private set; }
+    public float thirst { get; private set; }
+    public float armor { get; private set; }
 
-    //TODO: add availableActions, brain and movementController
 
     private void Awake()
     {
@@ -51,6 +50,7 @@ public class Human : MonoBehaviour
         stamina = maxStamina;
         hunger = maxHunger;
         thirst = maxThirst;
+        armor = 0f;
     }
 
     private void UpdateArmor(float amount)

@@ -3,37 +3,17 @@ using System.Collections.Generic;
 using UnityEngine;
 using AYellowpaper.SerializedCollections;
 using System;
+using Unity.VisualScripting;
 
 public class Inventory : MonoBehaviour
 {
     public List<ContainerSlot> slots;
     public int maxSlots = 20;
 
-    public SerializedDictionary<EquipmentType, ItemObject> equipment = new SerializedDictionary<EquipmentType, ItemObject>();
-    public Weapon currentWeapon;
-
     private EventHandler eventHandler;
-
-
     private void Awake()
     {
-        InitializeEquipment();
-        InitializeEvents();
-    }
-
-    private void InitializeEvents()
-    {
         eventHandler = GetComponent<EventHandler>();
-        eventHandler.AmmoRequestEvent += HandleAmmoRequest;
-    }
-
-    private void InitializeEquipment()
-    {
-        equipment.Clear();
-        equipment.Add(EquipmentType.Head, null);
-        equipment.Add(EquipmentType.Chest, null);
-        equipment.Add(EquipmentType.Legs, null);
-        equipment.Add(EquipmentType.Feet, null);
     }
 
     public bool AddItem(Item newItem, int amount)
@@ -69,88 +49,9 @@ public class Inventory : MonoBehaviour
         }
         return false;
     }
-
-    public void EquipItem()
+    public int CheckForAmmo(ContainerSlot slot, int requestedAmount)
     {
-        foreach (ContainerSlot slot in slots)
-        {
-            if (slot.item.type == ItemType.Equipment)
-            {
-                Equipment newEquipment = (Equipment)slot.item;
-
-                if(equipment[newEquipment.equipType] != null)
-                {
-                    ItemObject temp = equipment[newEquipment.equipType];
-                    equipment[newEquipment.equipType] = newEquipment;
-                    slot.item = temp;
-                    UpdateArmor();
-                    return;
-                }
-                else
-                {
-                    equipment[newEquipment.equipType] = newEquipment;
-                    RemoveItem(newEquipment, 1);
-                    UpdateArmor();
-                    return;
-                }
-            }
-
-            if(slot.item.type == ItemType.Weapon)
-            {
-                Weapon newWeapon = (Weapon)slot.item;
-
-                if (currentWeapon != null)
-                {
-                    ItemObject temp = currentWeapon;
-                    currentWeapon = newWeapon;
-                    slot.item = temp;
-                    eventHandler.ChangeWeapon(currentWeapon);
-                    return;
-                }
-                else
-                {
-                    currentWeapon = newWeapon;
-                    RemoveItem(newWeapon, 1);
-                    eventHandler.ChangeWeapon(currentWeapon);
-                    return;
-                }
-            }
-        }
-        Debug.LogWarning("No equipment found in inventory");
-    }
-    public void UpdateArmor()
-    {
-        float newArmor = 0f;
-        foreach (KeyValuePair<EquipmentType, ItemObject> entry in equipment)
-        {
-            if (entry.Value is Equipment equipmentItem)
-            {
-                newArmor += equipmentItem.armorLevel;
-            }
-        }
-        eventHandler.ChangeEquipment(newArmor);
-    }
-
-    private void HandleAmmoRequest(Weapon requestedWeapon, int requestedAmount)
-    {
-        foreach (ContainerSlot slot in slots)
-        {
-            if(slot.item is Ammunition ammunition)
-            {
-                if(requestedWeapon.weaponType == ammunition.ammoType)
-                {
-                    int availableAmmo = CheckForAmmo(slot, requestedAmount);
-                    eventHandler.ReturnAmmo(availableAmmo);
-                    return;
-                }
-            }
-        }
-        Debug.Log("Required ammunition not available");
-    }
-
-    private int CheckForAmmo(ContainerSlot slot, int requestedAmount)
-    {
-        if(slot.quantity >= requestedAmount)
+        if (slot.quantity >= requestedAmount)
         {
             slot.quantity -= requestedAmount;
 
@@ -167,7 +68,6 @@ public class Inventory : MonoBehaviour
 
             return remainingAmmo;
         }
-            
     }
 
     internal void UseItem(ConsumableType consumableType)
@@ -188,5 +88,92 @@ public class Inventory : MonoBehaviour
                 slots.Remove(slot);
             return;
         }
+    }
+
+    //Consumable, Resource, Ammunition, Equipment, Weapon
+    public bool HasConsumable(ConsumableType consumableType)
+    {
+        foreach(ContainerSlot slot in slots)
+        {
+            if (slot.item.type != ItemType.Consumable)
+                continue;
+
+            Consumable item = slot.item as Consumable;
+
+            if (item.consumableType != consumableType)
+                continue;
+
+            if (item.consumableType == consumableType)
+                return true;
+        }
+        return false;
+    }
+    public bool HasResource(ResourceType resourceType)
+    {
+        foreach (ContainerSlot slot in slots)
+        {
+            if (slot.item.type != ItemType.Resource)
+                continue;
+
+            Resource item = slot.item as Resource;
+
+            if (item.ResourceType != resourceType)
+                continue;
+
+            if (item.ResourceType == resourceType)
+                return true;
+        }
+        return false;
+    }
+    public bool HasAmmunition(WeaponType type)
+    {
+        foreach (ContainerSlot slot in slots)
+        {
+            if (slot.item.type != ItemType.Ammunition)
+                continue;
+
+            Ammunition item = slot.item as Ammunition;
+
+            if (item.ammoType != type)
+                continue;
+
+            if (item.ammoType == type)
+                return true;
+        }
+        return false;
+    }
+    public bool HasEquipment(EquipmentType type)
+    {
+        foreach (ContainerSlot slot in slots)
+        {
+            if (slot.item.type != ItemType.Equipment)
+                continue;
+
+            Equipment item = slot.item as Equipment;
+
+            if (item.equipType != type)
+                continue;
+
+            if (item.equipType == type)
+                return true;
+        }
+        return false;
+    }
+    public bool HasWeapon(WeaponType type)
+    {
+        foreach (ContainerSlot slot in slots)
+        {
+            if (slot.item.type != ItemType.Weapon)
+                continue;
+
+            Weapon item = slot.item as Weapon;
+
+            if (item.weaponType != type)
+                continue;
+
+            if (item.weaponType == type)
+                return true;
+        }
+        return false;
     }
 }

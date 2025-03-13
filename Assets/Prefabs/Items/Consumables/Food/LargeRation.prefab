@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 8638023328541222838}
   - component: {fileID: 14261969110471611}
   - component: {fileID: 457091622162201603}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: ItemModel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -94,9 +94,9 @@ GameObject:
   - component: {fileID: 5493551110925884352}
   - component: {fileID: 6412490478306799453}
   - component: {fileID: 6415671611507701036}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: LargeRation
-  m_TagString: Untagged
+  m_TagString: Consumable
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

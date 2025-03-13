@@ -23,8 +23,9 @@ public class TestPlayerMovement : MonoBehaviour
 
     private Inventory inventory;
     private WeaponHandler weaponHandler;
-    private Human human;
+    private StatsHandler stats;
     private EventHandler eventHandler;
+    private EquipmentHandler equipmentHandler;
 
     void Start()
     {
@@ -34,8 +35,9 @@ public class TestPlayerMovement : MonoBehaviour
 
         inventory = GetComponent<Inventory>();
         weaponHandler = GetComponent<WeaponHandler>();
-        human = GetComponent<Human>();
+        stats = GetComponent<StatsHandler>();
         eventHandler = GetComponent<EventHandler>();
+        equipmentHandler = GetComponent<EquipmentHandler>();
     }
 
     void Update()
@@ -94,7 +96,7 @@ public class TestPlayerMovement : MonoBehaviour
     private void DebugInputs()
     {
         if (Input.GetKeyDown(KeyCode.F))
-            inventory.EquipItem();
+            equipmentHandler.EquipItem();
         UnequipItem();
         UseWeapon();
         ReloadWeapon();
@@ -103,7 +105,7 @@ public class TestPlayerMovement : MonoBehaviour
 
     private void ReloadWeapon()
     {
-        if (Input.GetKeyDown(KeyCode.Mouse1) && inventory.currentWeapon != null)
+        if (Input.GetKeyDown(KeyCode.Mouse1) && equipmentHandler.currentWeapon != null)
         {
             weaponHandler.ReloadWeapon();
         }
@@ -111,7 +113,7 @@ public class TestPlayerMovement : MonoBehaviour
 
     private void UseWeapon()
     {
-        if (Input.GetKeyDown(KeyCode.Mouse0) && inventory.currentWeapon != null)
+        if (Input.GetKeyDown(KeyCode.Mouse0) && equipmentHandler.currentWeapon != null)
         {
             weaponHandler.Shoot();
         }
