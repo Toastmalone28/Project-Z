@@ -95,8 +95,6 @@ public class TestPlayerMovement : MonoBehaviour
 
     private void DebugInputs()
     {
-        if (Input.GetKeyDown(KeyCode.F))
-            equipmentHandler.EquipItem();
         UnequipItem();
         UseWeapon();
         ReloadWeapon();

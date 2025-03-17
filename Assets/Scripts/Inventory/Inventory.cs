@@ -91,6 +91,7 @@ public class Inventory : MonoBehaviour
     }
 
     //Consumable, Resource, Ammunition, Equipment, Weapon
+    //TODO: Make this return item instead of bool
     public bool HasConsumable(ConsumableType consumableType)
     {
         foreach(ContainerSlot slot in slots)

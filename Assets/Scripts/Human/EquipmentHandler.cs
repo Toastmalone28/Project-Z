@@ -36,55 +36,67 @@ public class EquipmentHandler : MonoBehaviour
         eventHandler.AmmoRequestEvent += HandleAmmoRequest;
     }
     //Loop through each item in the inventory to find an equipment item and equip it
-    public void EquipItem()
+    public void EquipItem(EquipmentType type)
     {
         foreach (ContainerSlot slot in inventory.slots)
         {
-            if (slot.item.type == ItemType.Equipment)
-            {
-                Equipment newEquipment = (Equipment)slot.item;
+            if (slot.item.type != ItemType.Equipment)
+                continue;
 
-                //if the designated equipment slot is not empty, change the inventory item with the equipped one
-                if (equipment[newEquipment.equipType] != null)
-                {
-                    ItemObject temp = equipment[newEquipment.equipType];
-                    equipment[newEquipment.equipType] = newEquipment;
-                    slot.item = temp;
-                    UpdateArmor();
-                    return;
-                }
-                else
-                {
-                    equipment[newEquipment.equipType] = newEquipment;
-                    inventory.RemoveItem(newEquipment, 1);
-                    UpdateArmor();
-                    return;
-                }
+            Equipment itemToEquip = slot.item as Equipment;
+
+            if (itemToEquip.equipType != type)
+                continue;
+
+            //if the designated equipment slot is not empty, change the inventory item with the equipped one
+            if (equipment[itemToEquip.equipType] != null)
+            {
+                ItemObject temp = equipment[itemToEquip.equipType];
+                equipment[itemToEquip.equipType] = itemToEquip;
+                slot.item = temp;
+                UpdateArmor();
+                return;
             }
-
-            if (slot.item.type == ItemType.Weapon)
+            else
             {
-                Weapon newWeapon = (Weapon)slot.item;
-
-                if (currentWeapon != null)
-                {
-                    ItemObject temp = currentWeapon;
-                    currentWeapon = newWeapon;
-                    slot.item = temp;
-                    eventHandler.ChangeWeapon(currentWeapon);
-                    return;
-                }
-                else
-                {
-                    currentWeapon = newWeapon;
-                    inventory.RemoveItem(newWeapon, 1);
-                    eventHandler.ChangeWeapon(currentWeapon);
-                    return;
-                }
+                equipment[itemToEquip.equipType] = itemToEquip;
+                inventory.RemoveItem(itemToEquip, 1);
+                UpdateArmor();
+                return;
             }
         }
         Debug.LogWarning("No equipment found in inventory");
     }
+    public void EquipItem(WeaponType type)
+    {
+        foreach (ContainerSlot slot in inventory.slots)
+        {
+            if (slot.item.type != ItemType.Weapon)
+                continue;
+
+            Weapon weaponToEquip = slot.item as Weapon;
+
+            if (weaponToEquip.weaponType != type)
+                continue;
+
+            if (currentWeapon != null)
+            {
+                ItemObject temp = currentWeapon;
+                currentWeapon = weaponToEquip;
+                slot.item = temp;
+                eventHandler.ChangeWeapon(currentWeapon);
+                return;
+            }
+            else
+            {
+                currentWeapon = weaponToEquip;
+                inventory.RemoveItem(weaponToEquip, 1);
+                eventHandler.ChangeWeapon(currentWeapon);
+                return;
+            }
+        }
+    }
+
     //Add each armor level up and invoke event to add the new armor level to the player stats
     public void UpdateArmor()
     {

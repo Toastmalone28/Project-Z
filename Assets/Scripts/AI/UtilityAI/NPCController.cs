@@ -58,6 +58,11 @@ public class NPCController : MonoBehaviour
     {
         StartCoroutine(SearchItemsCoroutine());
     }
+    public void EquipArmor(EquipmentType type)
+    {
+        StartCoroutine(EquipArmorCoroutine(1, type));
+    }
+
 
     #endregion
 
@@ -108,10 +113,24 @@ public class NPCController : MonoBehaviour
     {
         Debug.Log("I am searching for Items");
 
-        if(sensingHandler.targetsInView.Count > 0)
+        if(sensingHandler.targetsInView.Count > 0 && sensingHandler.targetsInView[0].gameObject.layer == sensingHandler.itemLayer)
             movementController.MoveTo(sensingHandler.targetsInView[0].transform.position);
 
         yield return null;
+        OnFinishedAction();
+    }
+    private IEnumerator EquipArmorCoroutine(int time, EquipmentType type)
+    {
+        if (!inventory.HasEquipment(type))
+            Debug.Log(stats.Name + " wants to equip " + type.ToString() + " but doesn't have it in it's inventory");
+        else
+        {
+            yield return new WaitForSeconds(time);
+
+            equipmentHandler.EquipItem(type);
+
+            Debug.Log(stats.Name + " equipped a " + type.ToString());
+        }
         OnFinishedAction();
     }
 

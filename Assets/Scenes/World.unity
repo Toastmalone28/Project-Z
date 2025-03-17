@@ -2046,6 +2046,14 @@ MonoBehaviour:
     quantity: 10
   - item: {fileID: 11400000, guid: 816d0e05333a7504a9a6165b23e0f992, type: 2}
     quantity: 10
+  - item: {fileID: 11400000, guid: 77af7cf9fbc926c4b953e59c9c034575, type: 2}
+    quantity: 1
+  - item: {fileID: 11400000, guid: 98ad607d45209e34fb72ce44a4b6a21c, type: 2}
+    quantity: 1
+  - item: {fileID: 11400000, guid: 0d3fb3b32680aba4db6d5cea37fa2381, type: 2}
+    quantity: 1
+  - item: {fileID: 11400000, guid: 8e085476e7031274fbc53f07209917b5, type: 2}
+    quantity: 1
   maxSlots: 20
 --- !u!33 &8141118961012322673
 MeshFilter:
@@ -2250,7 +2258,10 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 4bb654946de37e744bf0c0d2e19e46e1, type: 2}
   - {fileID: 11400000, guid: 6c247d4f0717c04479c0ca0a7516cec0, type: 2}
   - {fileID: 11400000, guid: b43e3c4bd164db844b4e947de8ad6c72, type: 2}
-  - {fileID: 11400000, guid: c9254c366b797f94c9ae31ef70f8a495, type: 2}
+  - {fileID: 11400000, guid: e84bd3d24f639b04288e463caf7940ef, type: 2}
+  - {fileID: 11400000, guid: f0ad89a018526f148b7590264d26be2d, type: 2}
+  - {fileID: 11400000, guid: 243802104e80d91499f143604524c021, type: 2}
+  - {fileID: 11400000, guid: 4ccf63b059455e845af0d065c32e8bd9, type: 2}
   inventory: {fileID: 0}
   weaponHandler: {fileID: 0}
   stats: {fileID: 0}
