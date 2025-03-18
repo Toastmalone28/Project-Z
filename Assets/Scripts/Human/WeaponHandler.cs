@@ -12,12 +12,17 @@ public class WeaponHandler : MonoBehaviour
     public LayerMask whatIsHittable;
 
     public GameObject currentWeapon {  get; private set; }
-    private Weapon currentWeaponData;
+    public Weapon currentWeaponData { get; private set; }
     private Transform barrelPoint;
     private SerializedDictionary<Weapon, int> ammoCache = new SerializedDictionary<Weapon, int>();
     private EventHandler eventHandler;
 
     private int currentAmmo;
+    public int CurrentAmmo
+    {
+        get { return currentAmmo; }
+        private set { currentAmmo = value; }
+    }
 
     private void Awake()
     {

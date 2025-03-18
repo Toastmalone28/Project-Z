@@ -2056,6 +2056,8 @@ MonoBehaviour:
     quantity: 1
   - item: {fileID: 11400000, guid: d0e4b263345454e459bbdeb2ce0d1145, type: 2}
     quantity: 1
+  - item: {fileID: 11400000, guid: 1bee8253494aec7478d9b7f9955fd0bd, type: 2}
+    quantity: 20
   maxSlots: 20
 --- !u!33 &8141118961012322673
 MeshFilter:
@@ -2267,6 +2269,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 76e36d13e0d8fa544a6d492c1ac2467c, type: 2}
   - {fileID: 11400000, guid: 38334d729a165f34799a60b2a6f9a80e, type: 2}
   - {fileID: 11400000, guid: b10f855ec79c8184ea905a88822e1b9e, type: 2}
+  - {fileID: 11400000, guid: 207f61935acac4347943bfbdca719333, type: 2}
   inventory: {fileID: 0}
   weaponHandler: {fileID: 0}
   stats: {fileID: 0}

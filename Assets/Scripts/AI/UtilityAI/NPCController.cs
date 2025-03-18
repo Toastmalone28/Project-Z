@@ -66,6 +66,13 @@ public class NPCController : MonoBehaviour
     {
         StartCoroutine(EquipWeaponCoroutine(1, type));
     }
+    public void ReloadWeapon()
+    {
+        if (weaponHandler.currentWeaponData != null)
+            StartCoroutine(ReloadWeaponCoroutine(weaponHandler.currentWeaponData.reloadTime));
+        else
+            Debug.Log(stats.Name + " tries to reload, but has no weapon equipped");
+    }
 
 
 
@@ -148,8 +155,16 @@ public class NPCController : MonoBehaviour
         {
             yield return new WaitForSeconds(time);
 
-            eventHandler.ChangeWeapon(weaponToEquip);
+            equipmentHandler.EquipItem(type);
         }
+        OnFinishedAction();
+    }
+    private IEnumerator ReloadWeaponCoroutine(float time)
+    {
+        yield return new WaitForSeconds(time);
+
+        weaponHandler.ReloadWeapon();
+
         OnFinishedAction();
     }
 

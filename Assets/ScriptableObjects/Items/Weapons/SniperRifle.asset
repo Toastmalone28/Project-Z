@@ -21,3 +21,4 @@ MonoBehaviour:
   weaponType: 2
   range: 200
   maxAmmo: 5
+  reloadTime: 0

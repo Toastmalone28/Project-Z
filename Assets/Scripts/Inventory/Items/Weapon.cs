@@ -10,4 +10,5 @@ public class Weapon : ItemObject
     public WeaponType weaponType;
     public float range;
     public int maxAmmo;
+    public float reloadTime;
 }
