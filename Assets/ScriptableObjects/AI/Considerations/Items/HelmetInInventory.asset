@@ -9,31 +9,36 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 36cd93eec75faeb439e45f4213e5e6d6, type: 3}
-  m_Name: InventorySpace
+  m_Script: {fileID: 11500000, guid: 21493d6f5e8af854aa2e9d709cc2cf71, type: 3}
+  m_Name: HelmetInInventory
   m_EditorClassIdentifier: 
-  Name: Inventoryspace Consideration
+  Name: Helmet in Inventory
   responseCurve:
     serializedVersion: 2
     m_Curve:
     - serializedVersion: 3
       time: 0
-      value: 1
-      inSlope: -3.11772
-      outSlope: -3.11772
-      tangentMode: 0
+      value: 0
+      inSlope: 1
+      outSlope: 1
+      tangentMode: 34
       weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.033285093
+      inWeight: 0
+      outWeight: 0
     - serializedVersion: 3
       time: 1
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
+      value: 1
+      inSlope: 1
+      outSlope: 1
+      tangentMode: 34
       weightedMode: 0
       inWeight: 0
       outWeight: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+  itemType: 0
+  weaponType: 0
+  consumableType: 0
+  equipmentType: 0
+  resourceType: 0

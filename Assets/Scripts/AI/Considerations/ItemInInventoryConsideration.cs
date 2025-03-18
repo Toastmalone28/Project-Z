@@ -7,7 +7,7 @@ using UnityEngine.SocialPlatforms.Impl;
 [CreateAssetMenu(fileName = "ItemInInventory", menuName = "UtilityAI/Considerations/ItemInInventory")]
 public class ItemInInventoryConsideration : Consideration
 {
-    [SerializeField] AnimationCurve responseCurve;
+    [SerializeField] public AnimationCurve responseCurve;
 
     public ItemType itemType;
 

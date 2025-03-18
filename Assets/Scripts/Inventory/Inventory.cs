@@ -160,7 +160,7 @@ public class Inventory : MonoBehaviour
         }
         return false;
     }
-    public bool HasWeapon(WeaponType type)
+    public Weapon HasWeapon(WeaponType type)
     {
         foreach (ContainerSlot slot in slots)
         {
@@ -173,8 +173,8 @@ public class Inventory : MonoBehaviour
                 continue;
 
             if (item.weaponType == type)
-                return true;
+                return item;
         }
-        return false;
+        return null;
     }
 }

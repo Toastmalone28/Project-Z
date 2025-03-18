@@ -10,6 +10,8 @@ public class ItemConsiderationEditor : Editor
     {
         ItemInInventoryConsideration itemInInventoryConsideration = (ItemInInventoryConsideration)target;
 
+        itemInInventoryConsideration.responseCurve = EditorGUILayout.CurveField("Response Curve", itemInInventoryConsideration.responseCurve);
+
         itemInInventoryConsideration.itemType = (ItemType)EditorGUILayout.EnumPopup("Item Type", itemInInventoryConsideration.itemType);
 
         switch (itemInInventoryConsideration.itemType)

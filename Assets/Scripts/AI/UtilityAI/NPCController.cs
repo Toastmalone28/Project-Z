@@ -62,6 +62,12 @@ public class NPCController : MonoBehaviour
     {
         StartCoroutine(EquipArmorCoroutine(1, type));
     }
+    public void EquipWeapon(WeaponType type)
+    {
+        StartCoroutine(EquipWeaponCoroutine(1, type));
+    }
+
+
 
 
     #endregion
@@ -130,6 +136,19 @@ public class NPCController : MonoBehaviour
             equipmentHandler.EquipItem(type);
 
             Debug.Log(stats.Name + " equipped a " + type.ToString());
+        }
+        OnFinishedAction();
+    }
+    private IEnumerator EquipWeaponCoroutine(int time, WeaponType type)
+    {
+        Weapon weaponToEquip = inventory.HasWeapon(type);
+        if (weaponToEquip == null)
+            Debug.Log(stats.Name + " wants to equip " + type.ToString() + " but doesn't have it in it's inventory");
+        else
+        {
+            yield return new WaitForSeconds(time);
+
+            eventHandler.ChangeWeapon(weaponToEquip);
         }
         OnFinishedAction();
     }

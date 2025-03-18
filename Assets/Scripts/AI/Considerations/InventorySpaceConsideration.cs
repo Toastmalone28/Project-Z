@@ -5,7 +5,7 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "InventorySpace", menuName = "UtilityAI/Considerations/InventorySpace")]
 public class InventorySpaceConsideration : Consideration
 {
-    [SerializeField] AnimationCurve responseCurve;
+    [SerializeField] public AnimationCurve responseCurve;
     public override float ScoreConsideration(NPCController npc)
     {
         score = responseCurve.Evaluate(Mathf.Clamp01(npc.inventory.slots.Count / npc.inventory.maxSlots));

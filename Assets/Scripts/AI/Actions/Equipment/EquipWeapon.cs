@@ -2,17 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EquipWeapon : MonoBehaviour
+[CreateAssetMenu(fileName = "EquipWeapon", menuName = "UtilityAI/Actions/Equipment/Weapon")]
+public class EquipWeapon : Action
 {
-    // Start is called before the first frame update
-    void Start()
+    public WeaponType type;
+    public override void Execute(NPCController npc)
     {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        npc.EquipWeapon(type);
     }
 }

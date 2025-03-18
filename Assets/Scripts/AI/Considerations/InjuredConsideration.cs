@@ -5,7 +5,7 @@ using UnityEngine;
 [CreateAssetMenu(fileName ="Injured", menuName ="UtilityAI/Considerations/Injured")]
 public class InjuredConsideration : Consideration
 {
-    [SerializeField] private AnimationCurve responseCurve;
+    [SerializeField] public AnimationCurve responseCurve;
     public override float ScoreConsideration(NPCController npc)
     {
         score = responseCurve.Evaluate(Mathf.Clamp01(npc.stats.health / npc.stats.maxHealth));
