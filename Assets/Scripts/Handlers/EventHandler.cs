@@ -10,6 +10,7 @@ public class EventHandler : MonoBehaviour
     public event Action<float> OnEquipmentChange;
     public event Action<Weapon> OnWeaponChange;
     public event Action<ConsumableType, int> OnConsumableUsed;
+    public event Action<PointOfInterest> UpdateCurrentAreaEvent;
 
     internal void ChangeEquipment(float newArmor)
     {
@@ -34,5 +35,10 @@ public class EventHandler : MonoBehaviour
     internal void ConsumeItem(ConsumableType type, int value)
     {
         OnConsumableUsed.Invoke(type, value);
+    }
+
+    internal void UpdateCurrentArea(PointOfInterest pointOfInterest)
+    {
+        UpdateCurrentAreaEvent.Invoke(pointOfInterest);
     }
 }

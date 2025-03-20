@@ -11,6 +11,10 @@ public class MovementController : MonoBehaviour
     {
         agent = GetComponent<NavMeshAgent>();
     }
+    private void Update()
+    {
+        agent.destination = transform.position + Vector3.forward;
+    }
 
     public void MoveTo(Vector3 position)
     {

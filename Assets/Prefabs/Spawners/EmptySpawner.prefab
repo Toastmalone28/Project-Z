@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 5628479568385038605}
   - component: {fileID: 3675270371955336872}
   m_Layer: 0
-  m_Name: TestItemSpawner
+  m_Name: EmptySpawner
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -44,9 +44,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d2e06c42ed917fc44b65f24c42fb21f6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  prefabs:
-  - {fileID: 8306389450912288528, guid: 9fb02d125758f9f4abc559f214aad1c5, type: 3}
-  - {fileID: 4809986364075890082, guid: 8dd2e7de940e17249abe85209e3fcc18, type: 3}
+  prefabs: []
   minSpawnInterval: 5
   maxSpawnInterval: 10
   spawnRadius: 15
