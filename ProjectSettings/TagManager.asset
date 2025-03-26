@@ -11,6 +11,7 @@ TagManager:
   - Zombie
   - Ammunition
   - Consumable
+  - Area
   layers:
   - Default
   - TransparentFX

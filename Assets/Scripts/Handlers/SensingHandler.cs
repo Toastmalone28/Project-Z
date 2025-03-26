@@ -7,23 +7,43 @@ public class SensingHandler : MonoBehaviour
 {
     public float visionRange;
     public float visionAngle;
+
+    public float scanFrequency;
+    private float scanInterval;
+    private float scanTimer;
+
     public LayerMask itemLayer;
-    public LayerMask hittableLayer;
     public LayerMask obstacleLayer;
 
-    public List<GameObject> targetsInView { get; private set; }
+    public List<GameObject> TargetsInView
+    {
+        get
+        {
+            targetsInView.RemoveAll(obj => !obj);
+            return targetsInView;
+        }
+    }
+    private List<GameObject> targetsInView;
     private void Awake()
     {
         targetsInView = new List<GameObject>();
+        scanInterval = 1f / scanFrequency;
     }
 
     private void FixedUpdate()
     {
-        ScanEnvironment();
+        scanTimer -= Time.deltaTime;
+        if(scanTimer < 0)
+        {
+            scanTimer += scanInterval;
+            ScanEnvironment();
+        }
     }
     public List<GameObject> ScanEnvironment()
     {
-        Collider[] colliders = Physics.OverlapSphere(transform.position, visionRange, itemLayer | hittableLayer);
+        targetsInView.Clear();
+
+        Collider[] colliders = Physics.OverlapSphere(transform.position, visionRange, itemLayer);
 
         GetTargetsInView(colliders);
 
@@ -43,10 +63,6 @@ public class SensingHandler : MonoBehaviour
             {
                 targetsInView.Add(collider.gameObject);
             }
-            else if(targetsInView.Contains(collider.gameObject))
-            {
-                targetsInView.Remove(collider.gameObject);
-            }
         }
     }
 
@@ -59,12 +75,6 @@ public class SensingHandler : MonoBehaviour
 
         float distanceToTarget = Vector3.Distance(transform.position, target.transform.position);
         return !Physics.Raycast(transform.position, directionToTarget, distanceToTarget, obstacleLayer);
-    }
-
-    private void HandleDetection(GameObject gameObject)
-    {
-        if(!targetsInView.Contains(gameObject))
-            targetsInView.Add(gameObject);
     }
 
     void OnDrawGizmosSelected()

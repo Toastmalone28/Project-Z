@@ -37,8 +37,8 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  itemType: 0
+  itemType: 3
   weaponType: 0
   consumableType: 0
-  equipmentType: 0
+  equipmentType: 2
   resourceType: 0

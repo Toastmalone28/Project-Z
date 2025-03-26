@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using AYellowpaper.SerializedCollections;
-using System;
 using Unity.VisualScripting;
 
 public class Inventory : MonoBehaviour
@@ -88,6 +87,16 @@ public class Inventory : MonoBehaviour
                 slots.Remove(slot);
             return;
         }
+    }
+
+    internal void DropItem(ContainerSlot slot)
+    {
+        Vector3 randomPosition = gameObject.transform.position + new Vector3(Random.Range(-1, 1), 0, Random.Range(-1, 1));
+
+        GameObject droppedItem = Instantiate(slot.item.itemPrefab, randomPosition, Quaternion.identity);
+        droppedItem.GetComponent<Item>().amount = slot.quantity;
+
+        RemoveItem(slot.item, slot.quantity);
     }
 
     //Consumable, Resource, Ammunition, Equipment, Weapon

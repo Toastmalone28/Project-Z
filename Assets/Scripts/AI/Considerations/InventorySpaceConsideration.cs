@@ -8,7 +8,7 @@ public class InventorySpaceConsideration : Consideration
     [SerializeField] public AnimationCurve responseCurve;
     public override float ScoreConsideration(NPCController npc)
     {
-        score = responseCurve.Evaluate(Mathf.Clamp01(npc.inventory.slots.Count / npc.inventory.maxSlots));
+        score = responseCurve.Evaluate(Mathf.Clamp01(npc.inventory.slots.Count * 1f / npc.inventory.maxSlots));
         return score;
     }
 }

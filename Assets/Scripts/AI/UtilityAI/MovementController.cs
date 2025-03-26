@@ -5,7 +5,7 @@ using UnityEngine.AI;
 
 public class MovementController : MonoBehaviour
 {
-    private NavMeshAgent agent;
+    public NavMeshAgent agent {  get; private set; }
 
     private void Awake()
     {
@@ -13,7 +13,7 @@ public class MovementController : MonoBehaviour
     }
     private void Update()
     {
-        agent.destination = transform.position + Vector3.forward;
+        //agent.destination = transform.position + Vector3.forward;
     }
 
     public void MoveTo(Vector3 position)

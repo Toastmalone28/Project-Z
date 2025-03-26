@@ -2,22 +2,33 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum POIType { City, MilitaryBase, Forest, Mountain}
+public enum POIType { City, MilitaryBase, Forest, Mountain, None}
 public class PointOfInterest : MonoBehaviour
 {
     public string Name;
     public POIType type;
     public int dangerLevel;
+    public Vector3 areaSize {  get; private set; }
+    public Vector3 areaCenter { get; private set; }
+
+    private BoxCollider boxCollider;
+
+    private void Awake()
+    {
+        boxCollider = GetComponent<BoxCollider>();
+
+        areaSize = boxCollider.size;
+        areaCenter = boxCollider.center;
+    }
 
     private void OnDrawGizmos()
     {
-        BoxCollider collider = GetComponent<BoxCollider>();
-        if(collider == null)
+        if(GetComponent<BoxCollider>() == null)
             return;
 
         Gizmos.color = Color.magenta;
 
-        Gizmos.DrawWireCube(transform.position + collider.center, collider.size);
+        Gizmos.DrawWireCube(transform.position + GetComponent<BoxCollider>().center, GetComponent<BoxCollider>().size);
     }
 
     private void OnTriggerEnter(Collider other)

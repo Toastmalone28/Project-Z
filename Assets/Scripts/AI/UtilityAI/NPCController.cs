@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class NPCController : MonoBehaviour
 {
@@ -13,6 +14,8 @@ public class NPCController : MonoBehaviour
     public EventHandler eventHandler;
     public EquipmentHandler equipmentHandler;
     public SensingHandler sensingHandler;
+    public POIHandler poiHandler;
+    public PlayerTypeHandler playerTypeHandler;
 
     private void Awake()
     {
@@ -24,6 +27,8 @@ public class NPCController : MonoBehaviour
         eventHandler = GetComponent<EventHandler>();
         equipmentHandler = GetComponent<EquipmentHandler>();
         sensingHandler = GetComponent<SensingHandler>();
+        poiHandler = GetComponent<POIHandler>();
+        playerTypeHandler = GetComponent<PlayerTypeHandler>();
     }
     private void Update()
     {
@@ -73,8 +78,14 @@ public class NPCController : MonoBehaviour
         else
             Debug.Log(stats.Name + " tries to reload, but has no weapon equipped");
     }
-
-
+    public void ExploreArea(PointOfInterest poi)
+    {
+        StartCoroutine(ExploreAreaCoroutine(poi, 2f));
+    }
+    public void MoveAroundArea()
+    {
+        StartCoroutine(MoveAroundAreaCoroutine(1f));
+    }
 
 
     #endregion
@@ -126,8 +137,23 @@ public class NPCController : MonoBehaviour
     {
         Debug.Log("I am searching for Items");
 
-        if(sensingHandler.targetsInView.Count > 0 && sensingHandler.targetsInView[0].gameObject.layer == sensingHandler.itemLayer)
-            movementController.MoveTo(sensingHandler.targetsInView[0].transform.position);
+        if(sensingHandler.TargetsInView.Count > 0)
+        {
+            float distance = Mathf.Infinity;
+            GameObject closestItem = null;
+
+            foreach (GameObject item in sensingHandler.TargetsInView)
+            {
+                float tempDistance = Vector3.Distance(transform.position, item.transform.position);
+                if (tempDistance < distance)
+                {
+                    closestItem = item;
+                    distance = tempDistance;
+                }
+            }
+            movementController.MoveTo(closestItem.transform.position);
+        }
+
 
         yield return null;
         OnFinishedAction();
@@ -164,6 +190,54 @@ public class NPCController : MonoBehaviour
         yield return new WaitForSeconds(time);
 
         weaponHandler.ReloadWeapon();
+
+        OnFinishedAction();
+    }
+    private IEnumerator MoveAroundAreaCoroutine(float time)
+    {
+        Vector3 randomPosition = GetRandomPoint();
+        if (randomPosition != Vector3.zero)
+        {
+            movementController.MoveTo(randomPosition);
+            while (movementController.agent.pathPending || movementController.agent.remainingDistance > 0.5f)
+            {
+                yield return null;
+            }
+            yield return new WaitForSeconds(time);
+        }
+        OnFinishedAction();
+    }
+    private Vector3 GetRandomPoint()
+    {
+        PointOfInterest poi = poiHandler.currentArea;
+        for(int i = 0; i < 10;  i++)
+        {
+            float randomX = Random.Range(poi.transform.position.x + poi.areaCenter.x - poi.areaSize.x / 2, poi.transform.position.x + poi.areaCenter.x + poi.areaSize.x / 2);
+            float randomZ = Random.Range(poi.transform.position.z + poi.areaCenter.z - poi.areaSize.z / 2, poi.transform.position.z + poi.areaCenter.z + poi.areaSize.z / 2);
+            float randomY = Random.Range(poi.transform.position.y + poi.areaCenter.y - poi.areaSize.y / 2, poi.transform.position.y + poi.areaCenter.y + poi.areaSize.y / 2);
+
+            Vector3 randomPoint = new Vector3(randomX, randomY, randomZ);
+            NavMeshHit hit;
+            if (NavMesh.SamplePosition(randomPoint, out hit, poi.areaSize.y / 2, NavMesh.AllAreas))
+            {
+                return hit.position;
+            }
+        }
+        return Vector3.zero;
+    }
+
+    private IEnumerator ExploreAreaCoroutine(PointOfInterest poi, float time)
+    {
+        if (poi != null)
+            movementController.MoveTo(poi.transform.position);
+
+        eventHandler.UpdateDestination(poi);
+
+        while (movementController.agent.pathPending || movementController.agent.remainingDistance > 0.5f)
+        {
+            yield return null;
+        }
+        yield return new WaitForSeconds(time);
 
         OnFinishedAction();
     }

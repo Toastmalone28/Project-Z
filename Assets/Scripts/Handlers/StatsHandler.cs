@@ -41,11 +41,34 @@ public class StatsHandler : MonoBehaviour
     {
         //Calculate damage by multiplying damage by 100 divided by 100 + current armor
         float newDamage = damage * 100 / (100 + armor);
-        health = health - newDamage;
+        health -= newDamage;
+
+        if (health <= 0)
+            Die();
+    }
+
+    private void Die()
+    {
+        NPCController npc = gameObject.GetComponent<NPCController>();
+
+        if (npc != null)
+            eventHandler.PlayerDeath(npc);
+
+        if(inventory.slots.Count > 0)
+        {
+            foreach (ContainerSlot slot in inventory.slots)
+            {
+                inventory.DropItem(slot);
+            }
+        }
+
+        Destroy(gameObject);
     }
 
     private void InitializeStats()
     {
+        inventory = gameObject.GetComponent<Inventory>();
+
         health = maxHealth;
         stamina = maxStamina;
         hunger = maxHunger;

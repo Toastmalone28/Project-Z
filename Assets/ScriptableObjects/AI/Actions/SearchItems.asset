@@ -15,3 +15,4 @@ MonoBehaviour:
   Name: Search Items
   considerations:
   - {fileID: 11400000, guid: 0231b8b8c537aa34fb745adece25701e, type: 2}
+  - {fileID: 11400000, guid: 39bfa4dc4b13f6c4a8143d62fb1bfb98, type: 2}

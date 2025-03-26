@@ -11,6 +11,8 @@ public class EventHandler : MonoBehaviour
     public event Action<Weapon> OnWeaponChange;
     public event Action<ConsumableType, int> OnConsumableUsed;
     public event Action<PointOfInterest> UpdateCurrentAreaEvent;
+    public event Action<PointOfInterest> UpdateDestinationEvent;
+    public event Action<NPCController> OnPlayerDeathEvent;
 
     internal void ChangeEquipment(float newArmor)
     {
@@ -40,5 +42,15 @@ public class EventHandler : MonoBehaviour
     internal void UpdateCurrentArea(PointOfInterest pointOfInterest)
     {
         UpdateCurrentAreaEvent.Invoke(pointOfInterest);
+    }
+
+    internal void UpdateDestination(PointOfInterest poi)
+    {
+        UpdateDestinationEvent.Invoke(poi);
+    }
+
+    internal void PlayerDeath(NPCController npc)
+    {
+        OnPlayerDeathEvent.Invoke(npc);
     }
 }
