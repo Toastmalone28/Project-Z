@@ -14,7 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemName: Stone
   itemSprite: {fileID: 0}
-  itemPrefab: {fileID: 0}
+  itemPrefab: {fileID: 8306389450912288528, guid: 88e29c7357d53b749b7618b2c6ceea36,
+    type: 3}
   isUnique: 0
   type: 1
   ResourceType: 1

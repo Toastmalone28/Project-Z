@@ -14,7 +14,7 @@ public class AmmoCountConsideration : Consideration
         if (currentWeapon == null)
             return 0f;
 
-        score = responseCurve.Evaluate(npc.weaponHandler.CurrentAmmo / currentWeapon.maxAmmo * 100);
+        score = responseCurve.Evaluate((float)npc.weaponHandler.CurrentAmmo / currentWeapon.maxAmmo * 100f);
         return score;
     }
 }

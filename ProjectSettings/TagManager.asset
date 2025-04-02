@@ -12,6 +12,7 @@ TagManager:
   - Ammunition
   - Consumable
   - Area
+  - Debug
   layers:
   - Default
   - TransparentFX

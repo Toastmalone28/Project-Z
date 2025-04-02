@@ -14,10 +14,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemName: Assault Rifle
   itemSprite: {fileID: 0}
-  itemPrefab: {fileID: 5433768841863362486, guid: 29dafb8b94b667c408667a5eea41df2a,
+  itemPrefab: {fileID: 4809986364075890082, guid: 1de8c8538b290224483dad3810f9f540,
     type: 3}
   isUnique: 1
   type: 4
+  weaponPrefab: {fileID: 5433768841863362486, guid: 29dafb8b94b667c408667a5eea41df2a,
+    type: 3}
   weaponType: 1
   range: 100
   maxAmmo: 30
+  reloadTime: 2
+  shotCooldown: 0.15
+  damage: 20

@@ -14,7 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemName: Large Ration
   itemSprite: {fileID: 0}
-  itemPrefab: {fileID: 0}
+  itemPrefab: {fileID: 8306389450912288528, guid: 02a441e4dc0a82648abf01dbaf1ceaad,
+    type: 3}
   isUnique: 0
   type: 0
   consumableType: 1

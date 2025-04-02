@@ -15,18 +15,20 @@ public class SensingHandler : MonoBehaviour
     public LayerMask itemLayer;
     public LayerMask obstacleLayer;
 
-    public List<GameObject> TargetsInView
+    public List<GameObject> ItemsInView
     {
         get
         {
-            targetsInView.RemoveAll(obj => !obj);
-            return targetsInView;
+            itemsInView.RemoveAll(obj => !obj);
+            return itemsInView;
         }
     }
-    private List<GameObject> targetsInView;
+    private List<GameObject> itemsInView;
+
+
     private void Awake()
     {
-        targetsInView = new List<GameObject>();
+        itemsInView = new List<GameObject>();
         scanInterval = 1f / scanFrequency;
     }
 
@@ -39,29 +41,25 @@ public class SensingHandler : MonoBehaviour
             ScanEnvironment();
         }
     }
-    public List<GameObject> ScanEnvironment()
+    public void ScanEnvironment()
     {
-        targetsInView.Clear();
+        itemsInView.Clear();
 
-        Collider[] colliders = Physics.OverlapSphere(transform.position, visionRange, itemLayer);
+        Collider[] itemColliders = Physics.OverlapSphere(transform.position, visionRange, itemLayer);
 
-        GetTargetsInView(colliders);
-
-        return targetsInView;
+        GetTargetsInView(itemColliders, itemsInView);
     }
 
-    private void GetTargetsInView(Collider[] colliders)
+    private void GetTargetsInView(Collider[] colliders, List<GameObject> targetList)
     {
         foreach (Collider collider in colliders)
         {
             if (collider.gameObject.transform.IsChildOf(transform))
                 continue;
 
-            Vector3 directionToTarget = (collider.transform.position - transform.position).normalized;
-
-            if (IsInView(collider.gameObject) && !targetsInView.Contains(collider.gameObject))
+            if (IsInView(collider.gameObject) && !targetList.Contains(collider.gameObject))
             {
-                targetsInView.Add(collider.gameObject);
+                targetList.Add(collider.gameObject);
             }
         }
     }

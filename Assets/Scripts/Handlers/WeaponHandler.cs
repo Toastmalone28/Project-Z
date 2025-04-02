@@ -11,6 +11,8 @@ public class WeaponHandler : MonoBehaviour
     public Transform aimDirection;
     public LayerMask whatIsHittable;
 
+    public float shotOffset;
+
     public GameObject currentWeapon {  get; private set; }
     public Weapon currentWeaponData { get; private set; }
     private Transform barrelPoint;
@@ -24,9 +26,16 @@ public class WeaponHandler : MonoBehaviour
         private set { currentAmmo = value; }
     }
 
+    private float shotTimer;
+
     private void Awake()
     {
         InitializeEvents();
+    }
+
+    private void FixedUpdate()
+    {
+        shotTimer -= Time.deltaTime;
     }
 
     private void InitializeEvents()
@@ -38,6 +47,8 @@ public class WeaponHandler : MonoBehaviour
 
     private void EquipWeapon(Weapon weapon)
     {
+        shotTimer = weapon.shotCooldown;
+
         if (weapon != null)
         {
             SaveAmmo();
@@ -46,7 +57,7 @@ public class WeaponHandler : MonoBehaviour
 
         currentWeaponData = weapon;
 
-        currentWeapon = Instantiate(weapon.itemPrefab, weaponHoldPoint);
+        currentWeapon = Instantiate(weapon.weaponPrefab, weaponHoldPoint);
         currentWeapon.transform.localPosition = Vector3.zero;
         currentWeapon.transform.localRotation = Quaternion.identity;
 
@@ -71,7 +82,7 @@ public class WeaponHandler : MonoBehaviour
 
     public void Shoot()
     {
-        if(barrelPoint == null || aimDirection == null || currentWeaponData == null)
+        if (barrelPoint == null || aimDirection == null || currentWeaponData == null)
             return;
 
         if (currentAmmo == 0)
@@ -79,17 +90,36 @@ public class WeaponHandler : MonoBehaviour
             Debug.LogWarning("Weapon has no ammo");
             return;
         }
-        Debug.DrawRay(barrelPoint.position, aimDirection.forward * 100f, Color.red, 1f);
-        if (Physics.Raycast(barrelPoint.position, aimDirection.forward, out RaycastHit hit, currentWeaponData.range))
+
+        if (shotTimer < 0)
         {
-            Debug.Log("Hit: " + hit.collider.name);
+            shotTimer = currentWeaponData.shotCooldown;
+
+            // Adjust shot position instead of direction
+            Vector3 shotOrigin = barrelPoint.position + barrelPoint.right * shotOffset;
+
+            // Debugging ray to check direction
+            Debug.DrawRay(shotOrigin, aimDirection.forward * 100f, Color.red, 1f);
+
+            // Ensure proper raycasting
+            if (Physics.Raycast(shotOrigin, aimDirection.forward, out RaycastHit hit, (int)currentWeaponData.range, whatIsHittable, QueryTriggerInteraction.Ignore))
+            {
+                Debug.Log("Hit: " + hit.collider.name);
+
+                if (hit.collider.CompareTag("Zombie"))
+                    hit.collider.GetComponent<ZombieController>().DealDamage(currentWeaponData.damage);
+                if (hit.collider.CompareTag("Human") || hit.collider.CompareTag("Debug"))
+                    hit.collider.GetComponent<StatsHandler>().DealDamage(currentWeaponData.damage, gameObject);
+            }
+            else
+            {
+                Debug.Log("Missed");
+            }
+
+            currentAmmo--;
         }
-        else
-        {
-            Debug.Log("Missed");
-        }
-        currentAmmo--;
     }
+
 
     public void ReloadWeapon()
     {

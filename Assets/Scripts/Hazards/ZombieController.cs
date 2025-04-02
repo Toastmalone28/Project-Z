@@ -7,14 +7,22 @@ using UnityEngine.AI;
 public enum ZombieState { Inactive, Active}
 public class ZombieController : MonoBehaviour
 {
+    public float activationRange;
     public float interestLossDistance;
     public float attackRange;
     public float attackSpeed;
     public float attackDamage;
+    public float maxHealth;
+
+    public LayerMask hittableLayer;
+    public LayerMask obstacleLayer;
+
+    private float health;
 
     private GameObject currentTarget;
     private ZombieState currentState;
     private NavMeshAgent agent;
+    private List<GameObject> targetsInView;
 
     private float hitDelay;
 
@@ -22,17 +30,38 @@ public class ZombieController : MonoBehaviour
     {
         currentState = ZombieState.Inactive;
         agent = GetComponent<NavMeshAgent>();
+        targetsInView = new List<GameObject>();
+        health = maxHealth;
     }
 
-    private void OnTriggerEnter(Collider other)
+    public void ScanEnvironment()
     {
-        if(!other.CompareTag("Human") || currentTarget != null)
-            return;
+        targetsInView.Clear();
 
-        currentTarget = other.gameObject;
-        currentState = ZombieState.Active;
+        Collider[] itemColliders = Physics.OverlapSphere(transform.position, activationRange, hittableLayer);
 
-        agent.SetDestination(currentTarget.transform.position);
+        GetTargetsInView(itemColliders, targetsInView);
+    }
+
+    private void GetTargetsInView(Collider[] colliders, List<GameObject> targetList)
+    {
+        foreach (Collider collider in colliders)
+        {
+            if (collider.gameObject.transform.IsChildOf(transform))
+                continue;
+
+            if (IsInView(collider.gameObject) && !targetList.Contains(collider.gameObject))
+            {
+                targetList.Add(collider.gameObject);
+            }
+        }
+    }
+    private bool IsInView(GameObject target)
+    {
+        Vector3 directionToTarget = (target.transform.position - transform.position).normalized;
+        float distanceToTarget = Vector3.Distance(transform.position, target.transform.position);
+
+        return !Physics.Raycast(transform.position, directionToTarget, distanceToTarget, obstacleLayer);
     }
 
     private void FixedUpdate()
@@ -40,7 +69,14 @@ public class ZombieController : MonoBehaviour
         hitDelay -= Time.deltaTime;
 
         if (currentState == ZombieState.Inactive)
-            return;
+        {
+            ScanEnvironment();
+            
+            if(targetsInView.Count == 0)
+                return;
+
+            currentTarget = targetsInView[0];
+        }
         if (currentTarget != null)
             agent.SetDestination(currentTarget.transform.position);
         else
@@ -74,7 +110,15 @@ public class ZombieController : MonoBehaviour
         if(hitDelay <= 0)
         {
             hitDelay = attackSpeed;
-            currentTarget.GetComponent<StatsHandler>().DealDamage(attackDamage);
+            currentTarget.GetComponent<StatsHandler>().DealDamage(attackDamage, gameObject);
         }
+    }
+
+    public void DealDamage(float incomingDamage)
+    {
+        health -= incomingDamage;
+
+        if (health <= 0)
+            Destroy(gameObject);
     }
 }

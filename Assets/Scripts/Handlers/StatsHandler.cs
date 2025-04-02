@@ -20,6 +20,7 @@ public class StatsHandler : MonoBehaviour
     public float hunger { get; private set; }
     public float thirst { get; private set; }
     public float armor { get; private set; }
+    public GameObject recentlyAttackedBy {  get; private set; }
 
 
     private void Awake()
@@ -37,11 +38,13 @@ public class StatsHandler : MonoBehaviour
         eventHandler.OnConsumableUsed += RestoreStats;
     }
 
-    public void DealDamage(float damage)
+    public void DealDamage(float damage, GameObject attacker)
     {
         //Calculate damage by multiplying damage by 100 divided by 100 + current armor
         float newDamage = damage * 100 / (100 + armor);
         health -= newDamage;
+
+        recentlyAttackedBy = attacker;
 
         if (health <= 0)
             Die();
@@ -54,12 +57,9 @@ public class StatsHandler : MonoBehaviour
         if (npc != null)
             eventHandler.PlayerDeath(npc);
 
-        if(inventory.slots.Count > 0)
+        while(inventory.slots.Count > 0)
         {
-            foreach (ContainerSlot slot in inventory.slots)
-            {
-                inventory.DropItem(slot);
-            }
+            inventory.DropItem(inventory.slots[0]);
         }
 
         Destroy(gameObject);

@@ -14,7 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemName: Healthkit
   itemSprite: {fileID: 0}
-  itemPrefab: {fileID: 0}
+  itemPrefab: {fileID: 8306389450912288528, guid: cb1880a6cf9ae7e4da09e9ecefabd297,
+    type: 3}
   isUnique: 0
   type: 0
   consumableType: 0

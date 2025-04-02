@@ -14,7 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemName: 
   itemSprite: {fileID: 0}
-  itemPrefab: {fileID: 0}
+  itemPrefab: {fileID: 832882097362905684, guid: 90714a2567e7ab7469a80d6b691dc15b,
+    type: 3}
   isUnique: 1
   type: 3
   equipType: 3

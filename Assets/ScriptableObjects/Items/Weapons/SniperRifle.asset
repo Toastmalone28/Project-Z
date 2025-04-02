@@ -14,11 +14,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemName: Sniper Rifle
   itemSprite: {fileID: 0}
-  itemPrefab: {fileID: 851907603603811675, guid: dc345150b25da9845bd186e154c62e2f,
+  itemPrefab: {fileID: 4809986364075890082, guid: 8589b93a949b5734c8c182a3bc08b3f3,
     type: 3}
   isUnique: 1
   type: 4
+  weaponPrefab: {fileID: 851907603603811675, guid: dc345150b25da9845bd186e154c62e2f,
+    type: 3}
   weaponType: 2
   range: 200
   maxAmmo: 5
-  reloadTime: 0
+  reloadTime: 5
+  shotCooldown: 3
+  damage: 150

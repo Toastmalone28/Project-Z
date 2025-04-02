@@ -55,4 +55,17 @@ public class POIManager : MonoBehaviour
         }
         return nearestArea;
     }
+
+    public int GetNumberOfUnexploredAreas(NPCController npc)
+    {
+        int areaCount = 0;
+
+        foreach (PointOfInterest area in availableAreas)
+        {
+            if (!npc.poiHandler.knownAreas.Contains(area))
+                areaCount++;
+        }
+
+        return areaCount;
+    }
 }

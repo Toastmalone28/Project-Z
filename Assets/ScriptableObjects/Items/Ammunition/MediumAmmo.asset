@@ -14,7 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemName: Medium ammunition
   itemSprite: {fileID: 0}
-  itemPrefab: {fileID: 0}
+  itemPrefab: {fileID: 832882097362905684, guid: 88fd384cc2a9f4049abfb4a14e78696b,
+    type: 3}
   isUnique: 0
   type: 2
   ammoType: 1

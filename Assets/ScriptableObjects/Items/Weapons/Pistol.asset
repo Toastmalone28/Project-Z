@@ -14,10 +14,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemName: Pistol
   itemSprite: {fileID: 0}
-  itemPrefab: {fileID: 2344322170920278036, guid: 6f3bb54a467c7b64a8ca6192c9519cac,
+  itemPrefab: {fileID: 4809986364075890082, guid: 6c670b750ad85c141a749d2deb7879f4,
     type: 3}
   isUnique: 1
   type: 4
+  weaponPrefab: {fileID: 2344322170920278036, guid: 6f3bb54a467c7b64a8ca6192c9519cac,
+    type: 3}
   weaponType: 0
   range: 50
   maxAmmo: 10
+  reloadTime: 1
+  shotCooldown: 0.1
+  damage: 10

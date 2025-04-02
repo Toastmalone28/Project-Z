@@ -91,7 +91,7 @@ public class Inventory : MonoBehaviour
 
     internal void DropItem(ContainerSlot slot)
     {
-        Vector3 randomPosition = gameObject.transform.position + new Vector3(Random.Range(-1, 1), 0, Random.Range(-1, 1));
+        Vector3 randomPosition = gameObject.transform.position + new Vector3(Random.Range(-1f, 2f), 0, Random.Range(-1f, 2f));
 
         GameObject droppedItem = Instantiate(slot.item.itemPrefab, randomPosition, Quaternion.identity);
         droppedItem.GetComponent<Item>().amount = slot.quantity;

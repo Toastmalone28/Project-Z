@@ -14,7 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemName: Wood
   itemSprite: {fileID: 0}
-  itemPrefab: {fileID: 0}
+  itemPrefab: {fileID: 8306389450912288528, guid: 9c7499eebc38ec84fb9a17895ae40337,
+    type: 3}
   isUnique: 0
   type: 1
   ResourceType: 0

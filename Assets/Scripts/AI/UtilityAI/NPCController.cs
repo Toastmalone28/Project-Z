@@ -16,6 +16,7 @@ public class NPCController : MonoBehaviour
     public SensingHandler sensingHandler;
     public POIHandler poiHandler;
     public PlayerTypeHandler playerTypeHandler;
+    public ThreatHandler threatHandler;
 
     private void Awake()
     {
@@ -29,6 +30,7 @@ public class NPCController : MonoBehaviour
         sensingHandler = GetComponent<SensingHandler>();
         poiHandler = GetComponent<POIHandler>();
         playerTypeHandler = GetComponent<PlayerTypeHandler>();
+        threatHandler = GetComponent<ThreatHandler>();
     }
     private void Update()
     {
@@ -86,6 +88,14 @@ public class NPCController : MonoBehaviour
     {
         StartCoroutine(MoveAroundAreaCoroutine(1f));
     }
+    public void Flee()
+    {
+        StartCoroutine(FleeCoroutine(0.01f));
+    }
+    public void Shoot()
+    {
+        StartCoroutine(ShootCoroutine());
+    }
 
 
     #endregion
@@ -137,12 +147,12 @@ public class NPCController : MonoBehaviour
     {
         Debug.Log("I am searching for Items");
 
-        if(sensingHandler.TargetsInView.Count > 0)
+        if(sensingHandler.ItemsInView.Count > 0)
         {
             float distance = Mathf.Infinity;
             GameObject closestItem = null;
 
-            foreach (GameObject item in sensingHandler.TargetsInView)
+            foreach (GameObject item in sensingHandler.ItemsInView)
             {
                 float tempDistance = Vector3.Distance(transform.position, item.transform.position);
                 if (tempDistance < distance)
@@ -202,6 +212,8 @@ public class NPCController : MonoBehaviour
             while (movementController.agent.pathPending || movementController.agent.remainingDistance > 0.5f)
             {
                 yield return null;
+                if (sensingHandler.ItemsInView.Count > 0)
+                    OnFinishedAction();
             }
             yield return new WaitForSeconds(time);
         }
@@ -242,5 +254,50 @@ public class NPCController : MonoBehaviour
         OnFinishedAction();
     }
 
+    private IEnumerator FleeCoroutine(float time)
+    {
+        GameObject enemy = stats.recentlyAttackedBy;
+        if (enemy == null)
+            enemy = threatHandler.GetClosestInVision();
+
+        Vector3 direction = (transform.position - enemy.transform.position).normalized;
+        movementController.MoveTo(transform.position + direction * 10);
+
+        while (movementController.agent.pathPending || movementController.agent.remainingDistance > 0.5f)
+        {
+            yield return null;
+        }
+        yield return new WaitForSeconds(time);
+
+        OnFinishedAction();
+    }
+
+    private IEnumerator ShootCoroutine()
+    {
+        movementController.agent.isStopped = true;
+
+        GameObject target = threatHandler.GetClosestInVision();
+
+        FaceTarget(target.transform.position);
+
+        if(HasLineOfSight(target))
+            weaponHandler.Shoot();
+
+        yield return null;
+
+        OnFinishedAction();
+    }
+
+    private void FaceTarget(Vector3 targetPosition)
+    {
+        Vector3 direction = (targetPosition - transform.position).normalized;
+        Quaternion lookRotation = Quaternion.LookRotation(direction);
+        transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * 30f);
+    }
+
+    private bool HasLineOfSight(GameObject target)
+    {
+        return true;
+    }
     #endregion
 }

@@ -18,6 +18,8 @@ public class MovementController : MonoBehaviour
 
     public void MoveTo(Vector3 position)
     {
+        agent.isStopped = false;
+
         agent.destination = position;
     }
 }

@@ -14,7 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemName: Heavy ammunition
   itemSprite: {fileID: 0}
-  itemPrefab: {fileID: 0}
+  itemPrefab: {fileID: 832882097362905684, guid: 7dfa46b1bf01b754a927034f6b66fa39,
+    type: 3}
   isUnique: 0
   type: 2
   ammoType: 2
