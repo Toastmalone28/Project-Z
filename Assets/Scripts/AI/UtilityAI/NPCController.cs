@@ -17,6 +17,7 @@ public class NPCController : MonoBehaviour
     public POIHandler poiHandler;
     public PlayerTypeHandler playerTypeHandler;
     public ThreatHandler threatHandler;
+    public GroupHandler groupHandler;
 
     private void Awake()
     {
@@ -31,6 +32,7 @@ public class NPCController : MonoBehaviour
         poiHandler = GetComponent<POIHandler>();
         playerTypeHandler = GetComponent<PlayerTypeHandler>();
         threatHandler = GetComponent<ThreatHandler>();
+        groupHandler = GetComponent<GroupHandler>();
     }
     private void Update()
     {
@@ -96,7 +98,22 @@ public class NPCController : MonoBehaviour
     {
         StartCoroutine(ShootCoroutine());
     }
-
+    public void InviteToGroup()
+    {
+        StartCoroutine(InviteToGroupCoroutine(1f));
+    }
+    public void AcceptInvitation()
+    {
+        StartCoroutine(AcceptInvitationCoroutine(1f));
+    }
+    public void DeclineInvitation()
+    {
+        StartCoroutine(DeclineInvitationCoroutine(1f));
+    }
+    public void FollowLeader()
+    {
+        StartCoroutine(FollowLeaderCoroutine(1f));
+    }
 
     #endregion
 
@@ -145,7 +162,7 @@ public class NPCController : MonoBehaviour
     }
     private IEnumerator SearchItemsCoroutine()
     {
-        Debug.Log("I am searching for Items");
+        //Debug.Log("I am searching for Items");
 
         if(sensingHandler.ItemsInView.Count > 0)
         {
@@ -205,6 +222,7 @@ public class NPCController : MonoBehaviour
     }
     private IEnumerator MoveAroundAreaCoroutine(float time)
     {
+        float waitTime = time;
         Vector3 randomPosition = GetRandomPoint();
         if (randomPosition != Vector3.zero)
         {
@@ -213,9 +231,12 @@ public class NPCController : MonoBehaviour
             {
                 yield return null;
                 if (sensingHandler.ItemsInView.Count > 0)
-                    OnFinishedAction();
+                {
+                    waitTime = 0f;
+                    break;
+                }
             }
-            yield return new WaitForSeconds(time);
+            yield return new WaitForSeconds(waitTime);
         }
         OnFinishedAction();
     }
@@ -248,6 +269,9 @@ public class NPCController : MonoBehaviour
         while (movementController.agent.pathPending || movementController.agent.remainingDistance > 0.5f)
         {
             yield return null;
+
+            if (poiHandler.currentArea == poi)
+                break;
         }
         yield return new WaitForSeconds(time);
 
@@ -298,6 +322,75 @@ public class NPCController : MonoBehaviour
     private bool HasLineOfSight(GameObject target)
     {
         return true;
+    }
+    
+    private IEnumerator InviteToGroupCoroutine(float time)
+    {
+        yield return new WaitForSeconds(time);
+
+        GameObject go = threatHandler.GetClosestInVision("Human");
+
+        NPCController target = null;
+
+        if (go != null)
+            target = go.GetComponent<NPCController>();
+
+        if(target != null)
+        {
+            if(groupHandler.currentGroup == null)
+            {
+                groupHandler.currentGroup = gameObject.AddComponent<Group>();
+                groupHandler.currentGroup.groupLeader = this;
+                eventHandler.GroupUpdate(groupHandler.currentGroup);
+            }
+
+            target.groupHandler.InviteToGroup(groupHandler.currentGroup);
+        }
+
+        OnFinishedAction();
+    }
+
+    private IEnumerator AcceptInvitationCoroutine(float time)
+    {
+        yield return new WaitForSeconds(time);
+
+        if (groupHandler.isInvited)
+        {
+            groupHandler.AcceptGroupInvitation();
+        }
+
+        OnFinishedAction();
+    }
+    private IEnumerator DeclineInvitationCoroutine(float time)
+    {
+        yield return new WaitForSeconds(time);
+
+        if (groupHandler.isInvited)
+        {
+            groupHandler.DeclineGroupInvitation();
+        }
+
+        OnFinishedAction();
+    }
+
+    private IEnumerator FollowLeaderCoroutine(float time)
+    {
+        movementController.MoveTo(groupHandler.currentGroup.groupLeader.transform.position);
+
+        while (movementController.agent.pathPending || movementController.agent.remainingDistance > 0.5f)
+        {
+            //TODO: Add update frequency to reduce amount of updates per second
+            movementController.MoveTo(groupHandler.currentGroup.groupLeader.transform.position);
+            yield return null;
+            if (sensingHandler.ItemsInView.Count > 0)
+            {
+                break;
+            }
+        }
+
+        yield return new WaitForSeconds(time);
+
+        OnFinishedAction();
     }
     #endregion
 }

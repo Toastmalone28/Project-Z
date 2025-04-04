@@ -7,6 +7,7 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager instance;
     public List<NPCController> playerList;
+    public List<Group> groupList;
 
     private void Start()
     {
@@ -15,10 +16,28 @@ public class GameManager : MonoBehaviour
 
         InitializePlayerList();
         InitializeEvents();
+        InitializeGroupList();
+    }
+
+    private void InitializeGroupList()
+    {
+        groupList = new List<Group>();
+
+        foreach (GameObject go in GameObject.FindGameObjectsWithTag("Human"))
+        {
+            Group group = go.GetComponent<GroupHandler>().currentGroup;
+
+            if (group != null)
+            {
+                groupList.Add(group);
+            }
+        }
     }
 
     private void InitializePlayerList()
     {
+        playerList = new List<NPCController>();
+
         foreach(GameObject go in GameObject.FindGameObjectsWithTag("Human"))
         {
             playerList.Add(go.GetComponent<NPCController>());
@@ -30,6 +49,7 @@ public class GameManager : MonoBehaviour
         foreach (NPCController npc in playerList)
         {
             npc.eventHandler.OnPlayerDeathEvent += OnPlayerDeath;
+            npc.eventHandler.OnGroupUpdateEvent += OnGroupUpdate;
         }
     }
 
@@ -38,4 +58,23 @@ public class GameManager : MonoBehaviour
         npc.eventHandler.OnPlayerDeathEvent -= OnPlayerDeath;
         playerList.Remove(npc);
     }
+
+    private void OnGroupUpdate(Group group)
+    {
+        if(group == null) 
+            return;
+
+        if (!groupList.Contains(group))
+            groupList.Add(group);
+
+        if (group.IsEmpty())
+        {
+            groupList.Remove(group);
+        }
+        else if(group.groupLeader == null)
+        {
+            group.groupLeader = group.GroupMembers[0];
+        }
+    }
+
 }

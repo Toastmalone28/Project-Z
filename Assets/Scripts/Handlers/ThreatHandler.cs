@@ -155,7 +155,26 @@ public class ThreatHandler : MonoBehaviour
         return closest;
     }
 
-    void OnDrawGizmosSelected()
+    public GameObject GetClosestInVision(string tag)
+    {
+        float distance = Mathf.Infinity;
+        GameObject closest = null;
+        foreach (GameObject go in visibleEnemies)
+        {
+            if(!go.CompareTag(tag))
+                continue;
+
+            float d = Vector3.Distance(transform.position, go.transform.position);
+            if (d < distance)
+            {
+                closest = go;
+                distance = d;
+            }
+        }
+        return closest;
+    }
+
+    void OnDrawGizmos()
     {
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(transform.position, detectionRadius);

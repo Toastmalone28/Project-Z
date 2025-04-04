@@ -13,6 +13,7 @@ public class EventHandler : MonoBehaviour
     public event Action<PointOfInterest> UpdateCurrentAreaEvent;
     public event Action<PointOfInterest> UpdateDestinationEvent;
     public event Action<NPCController> OnPlayerDeathEvent;
+    public event Action<Group> OnGroupUpdateEvent;
 
     internal void ChangeEquipment(float newArmor)
     {
@@ -52,5 +53,10 @@ public class EventHandler : MonoBehaviour
     internal void PlayerDeath(NPCController npc)
     {
         OnPlayerDeathEvent.Invoke(npc);
+    }
+
+    internal void GroupUpdate(Group currentGroup)
+    {
+        OnGroupUpdateEvent.Invoke(currentGroup);
     }
 }

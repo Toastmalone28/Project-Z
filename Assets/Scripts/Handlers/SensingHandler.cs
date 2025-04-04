@@ -75,7 +75,7 @@ public class SensingHandler : MonoBehaviour
         return !Physics.Raycast(transform.position, directionToTarget, distanceToTarget, obstacleLayer);
     }
 
-    void OnDrawGizmosSelected()
+    void OnDrawGizmos()
     {
         Gizmos.color = Color.yellow;
         Gizmos.DrawWireSphere(transform.position, visionRange);

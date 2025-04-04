@@ -75,7 +75,8 @@ public class ZombieController : MonoBehaviour
             if(targetsInView.Count == 0)
                 return;
 
-            currentTarget = targetsInView[0];
+            if(currentTarget == null)
+                currentTarget = targetsInView[0];
         }
         if (currentTarget != null)
             agent.SetDestination(currentTarget.transform.position);
