@@ -50,6 +50,9 @@ public class ZombieController : MonoBehaviour
             if (collider.gameObject.transform.IsChildOf(transform))
                 continue;
 
+            if (!collider.gameObject.CompareTag("Human"))
+                continue;
+
             if (IsInView(collider.gameObject) && !targetList.Contains(collider.gameObject))
             {
                 targetList.Add(collider.gameObject);

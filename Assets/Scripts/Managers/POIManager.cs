@@ -6,7 +6,7 @@ using UnityEngine;
 public class POIManager : MonoBehaviour
 {
     public static POIManager instance;
-    private List<PointOfInterest> availableAreas;
+    public List<PointOfInterest> availableAreas { get; private set; }
 
     private void Awake()
     {

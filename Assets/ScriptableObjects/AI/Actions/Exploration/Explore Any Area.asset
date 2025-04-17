@@ -14,7 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Name: Explore nearest unknown Area
   considerations:
-  - {fileID: 11400000, guid: 273b3a61bb57b2e43af2590ca83af88b, type: 2}
   - {fileID: 11400000, guid: 2b0304df0bf54a241aaec762a8a6d97e, type: 2}
   - {fileID: 11400000, guid: edb3a5be996f8454a803f923dcd3641a, type: 2}
   type: 4

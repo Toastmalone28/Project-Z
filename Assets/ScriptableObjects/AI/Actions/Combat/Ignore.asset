@@ -9,11 +9,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 765e7baaf4f89b44f8cf9500ebf14740, type: 3}
-  m_Name: SearchItems
+  m_Script: {fileID: 11500000, guid: b92725af322e7954cbdc32f667f50b31, type: 3}
+  m_Name: Ignore
   m_EditorClassIdentifier: 
-  Name: Search Items
+  Name: 
   considerations:
-  - {fileID: 11400000, guid: 0231b8b8c537aa34fb745adece25701e, type: 2}
-  - {fileID: 11400000, guid: 39bfa4dc4b13f6c4a8143d62fb1bfb98, type: 2}
+  - {fileID: 11400000, guid: 91272dc4146c3f4439a3c8b913bbc9e5, type: 2}
   - {fileID: 11400000, guid: 5d4ec6f40ce583c4e98c0f8e7f9127f1, type: 2}
+  - {fileID: 11400000, guid: afa706e16f631374cb26f63e93da731c, type: 2}
+  - {fileID: 11400000, guid: a73d3bf5d2b84a04ca4e9bb49d16cfd7, type: 2}

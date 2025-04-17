@@ -14,10 +14,12 @@ public class ThreatHandler : MonoBehaviour
     private float scanTimer;
 
     public float memoryDuration;
+    public GameObject currentTarget;
 
-    private SerializedDictionary<GameObject, Vector3> enemyMemory = new SerializedDictionary<GameObject, Vector3>();
+    public SerializedDictionary<GameObject, Vector3> enemyMemory { get; private set; }
     private List<GameObject> visibleEnemies = new List<GameObject>();
     private List<GameObject> detectedEnemies = new List<GameObject>();
+
 
     public List<GameObject> VisibleEnemies
     {
@@ -39,6 +41,8 @@ public class ThreatHandler : MonoBehaviour
     private void Awake()
     {
         scanInterval = 1f / scanFrequency;
+
+        enemyMemory = new SerializedDictionary<GameObject, Vector3>();
     }
 
     private void FixedUpdate()
@@ -159,7 +163,7 @@ public class ThreatHandler : MonoBehaviour
     {
         float distance = Mathf.Infinity;
         GameObject closest = null;
-        foreach (GameObject go in visibleEnemies)
+        foreach (GameObject go in VisibleEnemies)
         {
             if(!go.CompareTag(tag))
                 continue;

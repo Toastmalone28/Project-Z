@@ -12,7 +12,7 @@ public class AmmoCountConsideration : Consideration
         Weapon currentWeapon = npc.weaponHandler.currentWeaponData;
 
         if (currentWeapon == null)
-            return 0f;
+            return 1f;
 
         score = responseCurve.Evaluate((float)npc.weaponHandler.CurrentAmmo / currentWeapon.maxAmmo * 100f);
         return score;

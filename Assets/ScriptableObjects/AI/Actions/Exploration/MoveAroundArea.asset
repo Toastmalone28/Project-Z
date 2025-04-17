@@ -15,4 +15,7 @@ MonoBehaviour:
   Name: Move around area
   considerations:
   - {fileID: 11400000, guid: b4df3f5328d26df47b3b06b3f387538b, type: 2}
-  - {fileID: 11400000, guid: 0231b8b8c537aa34fb745adece25701e, type: 2}
+  - {fileID: 11400000, guid: df781a14fe1969240acc9fa3d18e151f, type: 2}
+  - {fileID: 11400000, guid: 5d4ec6f40ce583c4e98c0f8e7f9127f1, type: 2}
+  - {fileID: 11400000, guid: da96e6846f92ba74582d5bb838c315e4, type: 2}
+  - {fileID: 11400000, guid: 3c7d3303b935f0a43acd8747b936b8f4, type: 2}

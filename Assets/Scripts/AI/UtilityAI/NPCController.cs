@@ -94,9 +94,9 @@ public class NPCController : MonoBehaviour
     {
         StartCoroutine(FleeCoroutine(0.01f));
     }
-    public void Shoot()
+    public void Shoot(string tag)
     {
-        StartCoroutine(ShootCoroutine());
+        StartCoroutine(ShootCoroutine(tag));
     }
     public void InviteToGroup()
     {
@@ -113,6 +113,10 @@ public class NPCController : MonoBehaviour
     public void FollowLeader()
     {
         StartCoroutine(FollowLeaderCoroutine(1f));
+    }
+    public void ChaseTarget()
+    {
+        StartCoroutine(ChaseTargetCoroutine(1f));
     }
 
     #endregion
@@ -230,7 +234,7 @@ public class NPCController : MonoBehaviour
             while (movementController.agent.pathPending || movementController.agent.remainingDistance > 0.5f)
             {
                 yield return null;
-                if (sensingHandler.ItemsInView.Count > 0)
+                if (sensingHandler.ItemsInView.Count > 0 || threatHandler.VisibleEnemies.Count > 0)
                 {
                     waitTime = 0f;
                     break;
@@ -270,7 +274,7 @@ public class NPCController : MonoBehaviour
         {
             yield return null;
 
-            if (poiHandler.currentArea == poi)
+            if (poiHandler.currentArea == poi || sensingHandler.ItemsInView.Count > 0 || threatHandler.VisibleEnemies.Count > 0)
                 break;
         }
         yield return new WaitForSeconds(time);
@@ -296,15 +300,20 @@ public class NPCController : MonoBehaviour
         OnFinishedAction();
     }
 
-    private IEnumerator ShootCoroutine()
+    private IEnumerator ShootCoroutine(string tag)
     {
         movementController.agent.isStopped = true;
 
-        GameObject target = threatHandler.GetClosestInVision();
+        GameObject newTarget = threatHandler.GetClosestInVision(tag);
 
-        FaceTarget(target.transform.position);
+        if(newTarget != null)
+        {
+            FaceTarget(newTarget.transform.position);
 
-        if(HasLineOfSight(target))
+            threatHandler.currentTarget = newTarget;
+        }
+
+        if (HasLineOfSight(newTarget))
             weaponHandler.Shoot();
 
         yield return null;
@@ -390,6 +399,26 @@ public class NPCController : MonoBehaviour
 
         yield return new WaitForSeconds(time);
 
+        OnFinishedAction();
+    }
+
+    private IEnumerator ChaseTargetCoroutine(float time)
+    {
+        float waitTime = time;
+        if (threatHandler.currentTarget != null)
+        {
+            movementController.MoveTo(threatHandler.enemyMemory[threatHandler.currentTarget]);
+            while (movementController.agent.pathPending || movementController.agent.remainingDistance > 0.5f)
+            {
+                yield return null;
+                if (sensingHandler.ItemsInView.Count > 0 || threatHandler.VisibleEnemies.Count > 0)
+                {
+                    waitTime = 0f;
+                    break;
+                }
+            }
+            yield return new WaitForSeconds(waitTime);
+        }
         OnFinishedAction();
     }
     #endregion

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -8,7 +9,7 @@ public class ThreatsVisible : Consideration
     [SerializeField] public AnimationCurve responseCurve;
     public override float ScoreConsideration(NPCController npc)
     {
-        score = responseCurve.Evaluate(npc.threatHandler.VisibleEnemies.Count);
+        score = responseCurve.Evaluate(Convert.ToInt32(npc.threatHandler.GetClosestInVision("Zombie") != null));
         return score;
     }
 }

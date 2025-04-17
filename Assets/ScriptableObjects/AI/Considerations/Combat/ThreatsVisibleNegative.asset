@@ -9,10 +9,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a0d006211fe73184e8a45be801243ff9, type: 3}
-  m_Name: NumberOfUnexploredAreas
+  m_Script: {fileID: 11500000, guid: 6bc9da76a68eee741853de1c890de47f, type: 3}
+  m_Name: ThreatsVisibleNegative
   m_EditorClassIdentifier: 
-  Name: Number of unexplored areas
+  Name: 
   responseCurve:
     serializedVersion: 2
     m_Curve:
