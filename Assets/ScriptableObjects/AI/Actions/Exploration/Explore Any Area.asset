@@ -15,5 +15,6 @@ MonoBehaviour:
   Name: Explore nearest unknown Area
   considerations:
   - {fileID: 11400000, guid: 2b0304df0bf54a241aaec762a8a6d97e, type: 2}
-  - {fileID: 11400000, guid: edb3a5be996f8454a803f923dcd3641a, type: 2}
+  - {fileID: 11400000, guid: 5d4ec6f40ce583c4e98c0f8e7f9127f1, type: 2}
+  - {fileID: 11400000, guid: 25b9374000b88b54aac10ed05efa4e65, type: 2}
   type: 4

@@ -21,7 +21,19 @@ public class ThreatLevel : Consideration
         bool hasHealingItem = npc.inventory.HasConsumable(ConsumableType.Healing);
         bool isZombie = npc.threatHandler.GetClosestInVision("Zombie") != null;
         int zombieCount = 0;
-        bool isHuman = npc.threatHandler.GetClosestInVision("Human") != null;
+
+        bool isHuman = false;
+        GameObject closestHuman = npc.threatHandler.GetClosestInVision("Human");
+
+        if (npc.groupHandler.currentGroup != null)
+        {
+            isHuman = closestHuman != null && !npc.groupHandler.currentGroup.GroupMembers.Contains(closestHuman.GetComponent<NPCController>());
+        }
+        else
+        {
+            isHuman = closestHuman != null;
+        }
+
         bool wasAggressive = npc.threatHandler.DetectedEnemies.Contains(npc.stats.recentlyAttackedBy);
 
         float threatScore = 0f;

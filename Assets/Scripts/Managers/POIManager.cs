@@ -42,8 +42,11 @@ public class POIManager : MonoBehaviour
             }
             else
             {
-                if(npc.poiHandler.knownAreas.Contains(poi))
-                    continue;
+                if (npc.poiHandler.knownAreas.ContainsKey(poi))
+                {
+                    if (Time.time - npc.poiHandler.knownAreas[poi] < npc.poiHandler.forgetThreshold)
+                        continue;
+                }
             }
 
             float newDistance = Vector3.Distance(npc.transform.position, area.transform.position);
@@ -62,7 +65,7 @@ public class POIManager : MonoBehaviour
 
         foreach (PointOfInterest area in availableAreas)
         {
-            if (!npc.poiHandler.knownAreas.Contains(area))
+            if (!npc.poiHandler.knownAreas.ContainsKey(area))
                 areaCount++;
         }
 

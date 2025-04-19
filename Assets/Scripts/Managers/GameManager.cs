@@ -18,6 +18,10 @@ public class GameManager : MonoBehaviour
         InitializeEvents();
         InitializeGroupList();
     }
+    private void Update()
+    {
+        //Debug.Log(Time.time);
+    }
 
     private void InitializeGroupList()
     {

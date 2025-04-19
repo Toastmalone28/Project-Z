@@ -1,3 +1,4 @@
+using AYellowpaper.SerializedCollections;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -7,7 +8,9 @@ public class POIHandler : MonoBehaviour
     public PointOfInterest currentArea {  get; private set; }
     public PointOfInterest destinationArea {  get; private set; }
 
-    public List<PointOfInterest> knownAreas;
+    public SerializedDictionary<PointOfInterest, float> knownAreas;
+    public float explorationCooldown { get; private set; }
+    public float forgetThreshold;
 
     private EventHandler eventHandler;
 
@@ -17,10 +20,15 @@ public class POIHandler : MonoBehaviour
         eventHandler.UpdateCurrentAreaEvent += UpdateCurrentArea;
         eventHandler.UpdateDestinationEvent += UpdateDestination;
     }
+    private void FixedUpdate()
+    {
+        explorationCooldown -= Time.deltaTime;
+    }
 
     private void UpdateDestination(PointOfInterest interest)
     {
         destinationArea = interest;
+        explorationCooldown = 100f;
     }
 
     private void UpdateCurrentArea(PointOfInterest poi)
@@ -31,8 +39,10 @@ public class POIHandler : MonoBehaviour
         {
             eventHandler.UpdateDestination(null);
 
-            if (!knownAreas.Contains(poi))
-                knownAreas.Add(poi);
+            if (!knownAreas.ContainsKey(poi))
+                knownAreas.Add(poi, Time.time);
+            else
+                knownAreas[poi] = Time.time;
         }
     }
 }

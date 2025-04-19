@@ -417,6 +417,7 @@ public class NPCController : MonoBehaviour
                     break;
                 }
             }
+            threatHandler.currentTarget = null;
             yield return new WaitForSeconds(waitTime);
         }
         OnFinishedAction();
