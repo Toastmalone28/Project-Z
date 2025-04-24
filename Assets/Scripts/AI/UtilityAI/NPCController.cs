@@ -19,6 +19,8 @@ public class NPCController : MonoBehaviour
     public ThreatHandler threatHandler;
     public GroupHandler groupHandler;
 
+    public Transform eyesPoint;
+
     private void Awake()
     {
         movementController = GetComponent<MovementController>();
@@ -275,7 +277,10 @@ public class NPCController : MonoBehaviour
             yield return null;
 
             if (poiHandler.currentArea == poi || sensingHandler.ItemsInView.Count > 0 || threatHandler.VisibleEnemies.Count > 0)
+            {
+                time = 0f;
                 break;
+            }
         }
         yield return new WaitForSeconds(time);
 
@@ -287,14 +292,17 @@ public class NPCController : MonoBehaviour
         GameObject enemy = stats.recentlyAttackedBy;
         if (enemy == null)
             enemy = threatHandler.GetClosestInVision();
-
-        Vector3 direction = (transform.position - enemy.transform.position).normalized;
-        movementController.MoveTo(transform.position + direction * 10);
-
-        while (movementController.agent.pathPending || movementController.agent.remainingDistance > 0.5f)
+        if(enemy != null)
         {
-            yield return null;
+            Vector3 direction = (transform.position - enemy.transform.position).normalized;
+            movementController.MoveTo(transform.position + direction * 10);
+
+            while (movementController.agent.pathPending || movementController.agent.remainingDistance > 0.5f)
+            {
+                yield return null;
+            }
         }
+
         yield return new WaitForSeconds(time);
 
         OnFinishedAction();
@@ -302,7 +310,7 @@ public class NPCController : MonoBehaviour
 
     private IEnumerator ShootCoroutine(string tag)
     {
-        movementController.agent.isStopped = true;
+        eventHandler.ChangeMovementState(false);
 
         GameObject newTarget = threatHandler.GetClosestInVision(tag);
 
@@ -330,7 +338,9 @@ public class NPCController : MonoBehaviour
 
     private bool HasLineOfSight(GameObject target)
     {
-        return true;
+        if (Physics.Raycast(eyesPoint.position, transform.forward, out RaycastHit hit, threatHandler.detectionRadius))
+            return hit.collider.gameObject == target;
+        return false;
     }
     
     private IEnumerator InviteToGroupCoroutine(float time)
@@ -391,7 +401,7 @@ public class NPCController : MonoBehaviour
             //TODO: Add update frequency to reduce amount of updates per second
             movementController.MoveTo(groupHandler.currentGroup.groupLeader.transform.position);
             yield return null;
-            if (sensingHandler.ItemsInView.Count > 0)
+            if (sensingHandler.ItemsInView.Count > 0 || threatHandler.VisibleEnemies.Count > 0)
             {
                 break;
             }

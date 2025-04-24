@@ -14,6 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerType: 0
   teamUp: 0.4
-  fight: 0.3
+  fight: 0.4
   collectItems: 0.9
   completeQuests: 0.8

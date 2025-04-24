@@ -6,8 +6,10 @@ using UnityEngine;
 public class GameManager : MonoBehaviour
 {
     public static GameManager instance;
-    public List<NPCController> playerList;
-    public List<Group> groupList;
+    [SerializeField] public List<NPCController> playerList { get; private set; }
+    [SerializeField] public List<Group> groupList { get; private set; }
+
+    private NPCSpawner npcSpawner;
 
     private void Start()
     {
@@ -17,10 +19,19 @@ public class GameManager : MonoBehaviour
         InitializePlayerList();
         InitializeEvents();
         InitializeGroupList();
+
+        InitializeSpawning();
     }
     private void Update()
     {
         //Debug.Log(Time.time);
+    }
+
+    private void InitializeSpawning()
+    {
+        npcSpawner = GetComponent<NPCSpawner>();
+
+        npcSpawner.StartSpawningLoop();
     }
 
     private void InitializeGroupList()
@@ -52,8 +63,7 @@ public class GameManager : MonoBehaviour
     {
         foreach (NPCController npc in playerList)
         {
-            npc.eventHandler.OnPlayerDeathEvent += OnPlayerDeath;
-            npc.eventHandler.OnGroupUpdateEvent += OnGroupUpdate;
+            AddPlayer(npc);
         }
     }
 
@@ -80,5 +90,11 @@ public class GameManager : MonoBehaviour
             group.groupLeader = group.GroupMembers[0];
         }
     }
+    public void AddPlayer(NPCController npc)
+    {
+        playerList.Add(npc);
 
+        npc.eventHandler.OnPlayerDeathEvent += OnPlayerDeath;
+        npc.eventHandler.OnGroupUpdateEvent += OnGroupUpdate;
+    }
 }

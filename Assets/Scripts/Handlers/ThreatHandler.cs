@@ -16,7 +16,7 @@ public class ThreatHandler : MonoBehaviour
     public float memoryDuration;
     public GameObject currentTarget;
 
-    public SerializedDictionary<GameObject, Vector3> enemyMemory { get; private set; }
+    [SerializeField] public SerializedDictionary<GameObject, Vector3> enemyMemory { get; private set; }
     private List<GameObject> visibleEnemies = new List<GameObject>();
     private List<GameObject> detectedEnemies = new List<GameObject>();
 
@@ -70,6 +70,18 @@ public class ThreatHandler : MonoBehaviour
         {
             GameObject enemy = collider.gameObject;
             if (enemy.transform.IsChildOf(transform)) continue;
+
+            NPCController thisNPC = GetComponent<NPCController>();
+            NPCController otherNPC = enemy.GetComponent<NPCController>();
+
+            if (thisNPC != null && otherNPC != null)
+            {
+                Group myGroup = thisNPC.groupHandler?.currentGroup;
+                if (myGroup != null && myGroup.GroupMembers.Contains(otherNPC))
+                {
+                    continue;
+                }
+            }
 
             currentlyDetected.Add(enemy);
 
@@ -131,6 +143,7 @@ public class ThreatHandler : MonoBehaviour
 
         if (!visibleEnemies.Contains(enemy) && !detectedEnemies.Contains(enemy))
         {
+            currentTarget = null;
             enemyMemory.Remove(enemy);
         }
     }

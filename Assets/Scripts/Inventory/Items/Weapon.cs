@@ -14,4 +14,5 @@ public class Weapon : ItemObject
     public float reloadTime;
     public float shotCooldown;
     public float damage;
+    public float spread;
 }

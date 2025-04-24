@@ -14,49 +14,54 @@ public class EventHandler : MonoBehaviour
     public event Action<PointOfInterest> UpdateDestinationEvent;
     public event Action<NPCController> OnPlayerDeathEvent;
     public event Action<Group> OnGroupUpdateEvent;
+    public event Action<bool> OnMovementStateChange;
 
     internal void ChangeEquipment(float newArmor)
     {
-        OnEquipmentChange.Invoke(newArmor);
+        OnEquipmentChange?.Invoke(newArmor);
     }
 
     internal void ChangeWeapon(Weapon currentWeapon)
     {
-        OnWeaponChange.Invoke(currentWeapon);
+        OnWeaponChange?.Invoke(currentWeapon);
     }
 
     internal void RequestAmmo(Weapon currentWeaponData, int neededAmmo)
     {
-        AmmoRequestEvent.Invoke(currentWeaponData, neededAmmo);
+        AmmoRequestEvent?.Invoke(currentWeaponData, neededAmmo);
     }
 
     internal void ReturnAmmo(int availableAmmo)
     {
-        AmmoReturnEvent.Invoke(availableAmmo);
+        AmmoReturnEvent?.Invoke(availableAmmo);
     }
 
     internal void ConsumeItem(ConsumableType type, int value)
     {
-        OnConsumableUsed.Invoke(type, value);
+        OnConsumableUsed?.Invoke(type, value);
     }
 
     internal void UpdateCurrentArea(PointOfInterest pointOfInterest)
     {
-        UpdateCurrentAreaEvent.Invoke(pointOfInterest);
+        UpdateCurrentAreaEvent?.Invoke(pointOfInterest);
     }
 
     internal void UpdateDestination(PointOfInterest poi)
     {
-        UpdateDestinationEvent.Invoke(poi);
+        UpdateDestinationEvent?.Invoke(poi);
     }
 
     internal void PlayerDeath(NPCController npc)
     {
-        OnPlayerDeathEvent.Invoke(npc);
+        OnPlayerDeathEvent?.Invoke(npc);
     }
 
     internal void GroupUpdate(Group currentGroup)
     {
-        OnGroupUpdateEvent.Invoke(currentGroup);
+        OnGroupUpdateEvent?.Invoke(currentGroup);
+    }
+    internal void ChangeMovementState(bool isMoving)
+    {
+        OnMovementStateChange?.Invoke(isMoving);
     }
 }

@@ -25,10 +25,9 @@ public class POIHandler : MonoBehaviour
         explorationCooldown -= Time.deltaTime;
     }
 
-    private void UpdateDestination(PointOfInterest interest)
+    private void UpdateDestination(PointOfInterest poi)
     {
-        destinationArea = interest;
-        explorationCooldown = 100f;
+        destinationArea = poi;
     }
 
     private void UpdateCurrentArea(PointOfInterest poi)
@@ -37,12 +36,14 @@ public class POIHandler : MonoBehaviour
 
         if (poi != null)
         {
-            eventHandler.UpdateDestination(null);
+            //eventHandler.UpdateDestination(null);
 
             if (!knownAreas.ContainsKey(poi))
                 knownAreas.Add(poi, Time.time);
             else
                 knownAreas[poi] = Time.time;
+
+            explorationCooldown = 100f;
         }
     }
 }

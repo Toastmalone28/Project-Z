@@ -22,17 +22,7 @@ public class ThreatLevel : Consideration
         bool isZombie = npc.threatHandler.GetClosestInVision("Zombie") != null;
         int zombieCount = 0;
 
-        bool isHuman = false;
-        GameObject closestHuman = npc.threatHandler.GetClosestInVision("Human");
-
-        if (npc.groupHandler.currentGroup != null)
-        {
-            isHuman = closestHuman != null && !npc.groupHandler.currentGroup.GroupMembers.Contains(closestHuman.GetComponent<NPCController>());
-        }
-        else
-        {
-            isHuman = closestHuman != null;
-        }
+        bool isHuman = npc.threatHandler.GetClosestInVision("Human") != null;
 
         bool wasAggressive = npc.threatHandler.DetectedEnemies.Contains(npc.stats.recentlyAttackedBy);
 
@@ -65,8 +55,14 @@ public class ThreatLevel : Consideration
 
         if (isHuman)
         {
-            threatScore += wasAggressive ? 0.5f : 0.2f;
+            if (wasAggressive)
+                threatScore += 0.5f;
+            else
+                threatScore += 0.1f;
         }
+
+        if (!isHuman && !isZombie)
+            threatScore /= 2f;
 
         return Mathf.Clamp01(threatScore);
     }

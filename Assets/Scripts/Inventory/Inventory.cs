@@ -186,4 +186,17 @@ public class Inventory : MonoBehaviour
         }
         return null;
     }
+
+    public List<Weapon> GetAllWeapons()
+    {
+        List<Weapon> weapons = new List<Weapon>();
+
+        foreach (ContainerSlot slot in slots)
+        {
+            if(slot.item.type == ItemType.Weapon)
+                weapons.Add(slot.item as Weapon);
+        }
+
+        return weapons;
+    }
 }

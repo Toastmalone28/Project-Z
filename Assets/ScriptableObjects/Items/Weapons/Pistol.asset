@@ -26,3 +26,4 @@ MonoBehaviour:
   reloadTime: 1
   shotCooldown: 0.1
   damage: 10
+  spread: 0.05

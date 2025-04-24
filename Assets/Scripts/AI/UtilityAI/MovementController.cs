@@ -6,10 +6,14 @@ using UnityEngine.AI;
 public class MovementController : MonoBehaviour
 {
     public NavMeshAgent agent {  get; private set; }
+    private EventHandler eventHandler;
 
     private void Awake()
     {
         agent = GetComponent<NavMeshAgent>();
+        eventHandler = gameObject.GetComponent<EventHandler>();
+
+        eventHandler.OnMovementStateChange += ChangeMovementState;
     }
     private void Update()
     {
@@ -18,8 +22,12 @@ public class MovementController : MonoBehaviour
 
     public void MoveTo(Vector3 position)
     {
-        agent.isStopped = false;
+        eventHandler.ChangeMovementState(true);
 
         agent.destination = position;
+    }
+    private void ChangeMovementState(bool isMoving)
+    {
+        agent.isStopped = !isMoving;
     }
 }

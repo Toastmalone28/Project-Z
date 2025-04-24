@@ -1,5 +1,4 @@
 using AYellowpaper.SerializedCollections;
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -16,7 +15,7 @@ public class WeaponHandler : MonoBehaviour
     public GameObject currentWeapon {  get; private set; }
     public Weapon currentWeaponData { get; private set; }
     private Transform barrelPoint;
-    private SerializedDictionary<Weapon, int> ammoCache = new SerializedDictionary<Weapon, int>();
+    [SerializeField] public SerializedDictionary<Weapon, int> ammoCache = new SerializedDictionary<Weapon, int>();
     private EventHandler eventHandler;
 
     private int currentAmmo;
@@ -27,6 +26,8 @@ public class WeaponHandler : MonoBehaviour
     }
 
     private float shotTimer;
+    private bool isAiming;
+    private Vector3 aimPosition = new Vector3(-0.4f, 0, 0.3f);
 
     private void Awake()
     {
@@ -43,6 +44,7 @@ public class WeaponHandler : MonoBehaviour
         eventHandler = GetComponent<EventHandler>();
         eventHandler.OnWeaponChange += EquipWeapon;
         eventHandler.AmmoReturnEvent += AddAmmo;
+        eventHandler.OnMovementStateChange += ResetAim;
     }
 
     private void EquipWeapon(Weapon weapon)
@@ -61,7 +63,7 @@ public class WeaponHandler : MonoBehaviour
         currentWeapon.transform.localPosition = Vector3.zero;
         currentWeapon.transform.localRotation = Quaternion.identity;
 
-        if(!ammoCache.TryGetValue(weapon, out currentAmmo))
+        if (!ammoCache.TryGetValue(weapon, out currentAmmo))
         {
             currentAmmo = weapon.maxAmmo;
             ammoCache[weapon] = currentAmmo;
@@ -91,18 +93,20 @@ public class WeaponHandler : MonoBehaviour
             return;
         }
 
+        if (!isAiming)
+            AimWeapon();
+
         if (shotTimer < 0)
         {
             shotTimer = currentWeaponData.shotCooldown;
 
-            // Adjust shot position instead of direction
-            Vector3 shotOrigin = barrelPoint.position + barrelPoint.right * shotOffset;
+            Vector3 shotOrigin = barrelPoint.position;
 
-            // Debugging ray to check direction
-            Debug.DrawRay(shotOrigin, aimDirection.forward * 100f, Color.red, 1f);
+            Vector3 direction = barrelPoint.TransformDirection(CalculateWeaponSpread());
 
-            // Ensure proper raycasting
-            if (Physics.Raycast(shotOrigin, aimDirection.forward, out RaycastHit hit, (int)currentWeaponData.range, whatIsHittable, QueryTriggerInteraction.Ignore))
+            Debug.DrawRay(shotOrigin, direction.normalized * 100f, Color.red, 0.1f);
+
+            if (Physics.Raycast(shotOrigin, direction.normalized, out RaycastHit hit, (int)currentWeaponData.range, whatIsHittable, QueryTriggerInteraction.Ignore))
             {
                 Debug.Log("Hit: " + hit.collider.name);
 
@@ -119,7 +123,23 @@ public class WeaponHandler : MonoBehaviour
             currentAmmo--;
         }
     }
-
+    private Vector3 CalculateWeaponSpread()
+    {
+        return new Vector3(Random.Range(-currentWeaponData.spread, currentWeaponData.spread), Random.Range(-currentWeaponData.spread, currentWeaponData.spread), 1);
+    }
+    private void AimWeapon()
+    {
+        isAiming = true;
+        currentWeapon.transform.localPosition = aimPosition;
+    }
+    private void ResetAim(bool isMoving)
+    {
+        if (isMoving && isAiming)
+        {
+            isAiming = false;
+            currentWeapon.transform.localPosition -= aimPosition;
+        }
+    }
 
     public void ReloadWeapon()
     {
@@ -134,5 +154,38 @@ public class WeaponHandler : MonoBehaviour
     public void AddAmmo(int amount)
     {
         currentAmmo += amount;
+    }
+
+    public Weapon GetBestAvailableWeapon()
+    {
+        NPCController npc = GetComponent<NPCController>();
+        Weapon best = null;
+        float bestScore = 0f;
+
+        foreach (Weapon weapon in npc.inventory.GetAllWeapons())
+        {
+            float score = EvaluateWeaponUtility(weapon, npc);
+
+            if (score > bestScore)
+            {
+                bestScore = score;
+                best = weapon;
+            }
+        }
+
+        return best;
+    }
+
+    private float EvaluateWeaponUtility(Weapon weapon, NPCController npc)
+    {
+        float score = 0f;
+
+        if (npc.inventory.HasAmmunition(weapon.weaponType))
+            score += 1f;
+
+        score += weapon.damage * 0.5f;
+        score += weapon.range * 0.3f;
+
+        return score;
     }
 }
