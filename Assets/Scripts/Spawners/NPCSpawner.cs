@@ -44,7 +44,13 @@ public class NPCSpawner : MonoBehaviour
         {
             GameObject newNPC = Instantiate(npcPrefab, point, Quaternion.identity);
 
-            newNPC.GetComponent<PlayerTypeHandler>().playerTypeData = playerTypes[Random.Range(0, playerTypes.Count)];
+            PlayerTypeData randomPlayerType = playerTypes[Random.Range(0, playerTypes.Count)];
+
+            newNPC.GetComponent<PlayerTypeHandler>().playerTypeData = randomPlayerType;
+
+            newNPC.gameObject.name = randomPlayerType.name;
+
+            newNPC.GetComponent<NameHandler>().TMPName.text = randomPlayerType.name;
 
             GameManager.instance.AddPlayer(newNPC.GetComponent<NPCController>());
 
@@ -67,10 +73,23 @@ public class NPCSpawner : MonoBehaviour
                 Debug.DrawRay(rayOrigin, Vector3.down * raycastHeight, Color.white, 3f);
 
                 point = hit.point;
+                if(CheckAreaForCharacters(point))
                 return true;
             }
         }
         point = Vector3.zero;
         return false;
+    }
+
+    private bool CheckAreaForCharacters(Vector3 point)
+    {
+        Collider[] colliders = Physics.OverlapSphere(point, 100f);
+
+        foreach (Collider c in colliders)
+        {
+            if (c.CompareTag("Human") || c.CompareTag("Zombie"))
+                return false;
+        }
+        return true;
     }
 }

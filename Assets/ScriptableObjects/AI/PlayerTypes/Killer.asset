@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Killer
   m_EditorClassIdentifier: 
   playerType: 3
-  teamUp: 0.3
+  teamUp: 0.1
   fight: 1
-  collectItems: 0.2
-  completeQuests: 0.1
+  collectItems: 0.3
+  completeQuests: 0.2

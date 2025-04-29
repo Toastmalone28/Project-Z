@@ -11,6 +11,8 @@ public class GameManager : MonoBehaviour
 
     private NPCSpawner npcSpawner;
 
+    public Camera spectatorCamera;
+
     private void Start()
     {
         if(instance == null)

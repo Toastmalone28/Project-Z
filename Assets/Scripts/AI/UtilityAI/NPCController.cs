@@ -20,6 +20,7 @@ public class NPCController : MonoBehaviour
     public GroupHandler groupHandler;
 
     public Transform eyesPoint;
+    public LayerMask visionLayers;
 
     private void Awake()
     {
@@ -338,7 +339,7 @@ public class NPCController : MonoBehaviour
 
     private bool HasLineOfSight(GameObject target)
     {
-        if (Physics.Raycast(eyesPoint.position, transform.forward, out RaycastHit hit, threatHandler.detectionRadius))
+        if (Physics.Raycast(eyesPoint.position, transform.forward, out RaycastHit hit, threatHandler.detectionRadius, visionLayers))
             return hit.collider.gameObject == target;
         return false;
     }
