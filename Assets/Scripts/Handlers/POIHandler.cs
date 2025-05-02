@@ -43,7 +43,7 @@ public class POIHandler : MonoBehaviour
             else
                 knownAreas[poi] = Time.time;
 
-            explorationCooldown = 100f;
+            explorationCooldown = 300f;
         }
     }
 }
